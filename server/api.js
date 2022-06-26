@@ -20,6 +20,10 @@ connection.once('open', () => {
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
+const notesRouter = require('./routes/notes');
+
+app.use('/notes', notesRouter);
+
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
 
