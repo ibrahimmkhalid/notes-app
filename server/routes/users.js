@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const jwt = require("jsonwebtoken");
+const {verifyJWT} = require("../middleware/authenticate.js");
 const bcrypt = require("bcrypt");
 let User = require('../models/user.models.js');
 
@@ -68,6 +69,12 @@ router.route('/login').post((req, res) => {
       }
     })
   })
+});
+
+router.route('/testLogin').get(verifyJWT, (req, res) => {
+  res.json({
+    status: "success"
+  });
 });
 
 module.exports = router;
