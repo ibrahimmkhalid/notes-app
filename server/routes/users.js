@@ -57,7 +57,7 @@ router.route('/login').post((req, res) => {
             return res.json({
               status: "success",
               message: "Logged in!",
-              token: "Bearer " + token,
+              token: token,
             })
           }
         )
