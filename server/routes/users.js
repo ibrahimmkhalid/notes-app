@@ -32,7 +32,6 @@ router.route('/login').post((req, res) => {
 
   User.findOne({username: data.username})
   .then(user => {
-    console.log(1);
     if(!user) {
       return res.json({
         status: "fail",
@@ -42,9 +41,7 @@ router.route('/login').post((req, res) => {
 
     bcrypt.compare(data.password, user.password)
     .then(match => {
-    console.log(2);
       if (match) {
-    console.log(3);
         const payload = {
           id: user.id,
           username: user.username,
@@ -63,7 +60,6 @@ router.route('/login').post((req, res) => {
           }
         )
       } else {
-    console.log(4);
         return res.json({
           status: "fail",
           message: "User does not exist!"
