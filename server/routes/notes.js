@@ -76,12 +76,20 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
   Note.findById(req.params.id)
     .then(note => {
-      note.title = req.body.title;
-      note.text = req.body.text;
+      let user = getAuthenticatedUser(req);
+      if (!note.owner || (note.owner && user && note.owner == user.id)) {
+        note.title = req.body.title;
+        note.text = req.body.text;
 
-      note.save()
-        .then(() => res.json('Note updated!'))
-        .catch(err => res.status(400).json('Error: ' + err));
+        note.save()
+          .then(() => res.json('Note updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      } else {
+        return res.json({
+          status: "fail",
+          message: "You are not authorized to edit this note"
+        })
+      }
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
