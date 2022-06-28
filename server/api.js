@@ -22,9 +22,11 @@ const HOST = process.env.HOST;
 
 const notesRouter = require('./routes/notes');
 const usersRouter = require('./routes/users');
+const searchRouter = require('./routes/search');
 
 app.use('/notes', notesRouter);
 app.use('/', usersRouter);
+app.use('/search', searchRouter);
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
