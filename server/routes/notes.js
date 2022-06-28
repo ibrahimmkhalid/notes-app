@@ -8,10 +8,26 @@ function canUserAccessNote(user, note) {
     || (user && user.admin == true);
 }
 
-router.route('/').get((req, res) => {
-  Note.find()
+router.route('/all').get((req, res) => {
+  user = getAuthenticatedUser(req);
+  if (user && user.admin == true) {
+    Note.find()
     .then(notes => res.json(notes))
     .catch(err => res.status(400).json('Error: ' + err));
+  } else if (user && user.admin == false) {
+    Note.find().or([
+      {owner: null},
+      {owner: user.id}
+    ])
+    .then(notes => res.json(notes))
+    .catch(err => res.status(400).json('Error: ' + err));
+  } else {
+    Note.find().or([
+      {owner: null}
+    ])
+    .then(notes => res.json(notes))
+    .catch(err => res.status(400).json('Error: ' + err));
+  }
 });
 
 router.route('/add/public').post((req, res) => {
