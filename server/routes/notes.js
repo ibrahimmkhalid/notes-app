@@ -2,6 +2,12 @@ const router = require('express').Router();
 const {verifyJWT, getAuthenticatedUser} = require("../middleware/authenticate.js");
 let Note = require('../models/note.models.js');
 
+function canUserAccessNote(user, note) {
+  return !note.owner
+    || (note.owner && user && note.owner == user.id)
+    || (user && user.admin == true);
+}
+
 router.route('/').get((req, res) => {
   Note.find()
     .then(notes => res.json(notes))
@@ -44,7 +50,7 @@ router.route('/:id').get((req, res) => {
   Note.findById(req.params.id)
     .then(note => {
       let user = getAuthenticatedUser(req);
-      if (!note.owner || (note.owner && user && note.owner == user.id)) {
+      if (canUserAccessNote(user, note)) {
         return res.json(note);
       } else {
         return res.json({
@@ -60,7 +66,7 @@ router.route('/:id').delete((req, res) => {
   Note.findById(req.params.id)
     .then(note => {
       let user = getAuthenticatedUser(req);
-      if (!note.owner || (note.owner && user && note.owner == user.id)) {
+      if (canUserAccessNote(user, note)) {
         note.delete();
         return res.json("Note Deleted");
       } else {
@@ -77,7 +83,7 @@ router.route('/update/:id').post((req, res) => {
   Note.findById(req.params.id)
     .then(note => {
       let user = getAuthenticatedUser(req);
-      if (!note.owner || (note.owner && user && note.owner == user.id)) {
+      if (canUserAccessNote(user, note)) {
         note.title = req.body.title;
         note.text = req.body.text;
 
