@@ -71,10 +71,4 @@ router.route('/login').post((req, res) => {
   })
 });
 
-router.route('/testLogin').get(verifyJWT, (req, res) => {
-  res.json({
-    status: "success"
-  });
-});
-
 module.exports = router;
