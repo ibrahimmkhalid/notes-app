@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const {verifyJWT, getAuthenticatedUser} = require("../middleware/authenticate.js");
 let Note = require('../models/note.models.js');
+const {getAllNotes, addNewNote} = require("../service/notes.js");
 
 function canUserAccessNote(user, note) {
   return !note.owner
@@ -10,53 +11,25 @@ function canUserAccessNote(user, note) {
 
 router.route('/all').get((req, res) => {
   user = getAuthenticatedUser(req);
-  if (user && user.admin == true) {
-    Note.find()
-    .then(notes => res.json(notes))
-    .catch(err => res.status(400).json('Error: ' + err));
-  } else if (user && user.admin == false) {
-    Note.find().or([
-      {owner: null},
-      {owner: user.id}
-    ])
-    .then(notes => res.json(notes))
-    .catch(err => res.status(400).json('Error: ' + err));
-  } else {
-    Note.find().or([
-      {owner: null}
-    ])
-    .then(notes => res.json(notes))
-    .catch(err => res.status(400).json('Error: ' + err));
-  }
-});
-
-router.route('/add/public').post((req, res) => {
-  const title = req.body.title;
-  const text = req.body.text;
-
-  const newNote = new Note({
-    title: title,
-    text: text,
-    owner: null,
-  });
-
-  newNote.save()
-  .then(() => res.json('Note added!'))
+  getAllNotes(user)
+  .then(notes => res.json(notes))
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/add/public').post((req, res) => {
+  const data = req.body;
+  data.owner = null;
+
+  addNewNote(data)
+  .then(() => res.json('Note added!'))
+  .catch(err => res.status(400).json('Error: ' + err));
+ });
+
 router.route('/add/private').post(verifyJWT, (req, res) => {
-  const title = req.body.title;
-  const text = req.body.text;
-  const owner = req.user.id;
+  const data = req.body;
+  data.owner = req.user.id;
 
-  const newNote = new Note({
-    title: title,
-    text: text,
-    owner: owner,
-  });
-
-  newNote.save()
+  addNewNote(data)
   .then(() => res.json('Private note added!'))
   .catch(err => res.status(400).json('Error: ' + err));
 });
