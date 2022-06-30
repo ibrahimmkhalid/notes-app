@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const {verifyJWT, getAuthenticatedUser} = require("../middleware/authenticate.js");
 let Note = require('../models/note.models.js');
-const {getAllNotes, addNewNote} = require("../service/notes.js");
+const {getAllNotes, addNewNote, getNoteByID} = require("../service/notes.js");
 
 function canUserAccessNote(user, note) {
   return !note.owner
@@ -9,11 +9,18 @@ function canUserAccessNote(user, note) {
     || (user && user.admin == true);
 }
 
-router.route('/all').get((req, res) => {
+router.route('/all').get(async (req, res) => {
   user = getAuthenticatedUser(req);
-  getAllNotes(user)
-  .then(notes => res.json(notes))
-  .catch(err => res.status(400).json('Error: ' + err));
+  let notes;
+  try {
+    notes = await getAllNotes(user);
+    res.json(notes);
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
+  // getAllNotes(user)
+  // .then(notes => res.json(notes))
+  // .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/add/public').post((req, res) => {
@@ -36,19 +43,11 @@ router.route('/add/private').post(verifyJWT, (req, res) => {
 
 
 router.route('/:id').get((req, res) => {
-  Note.findById(req.params.id)
-    .then(note => {
-      let user = getAuthenticatedUser(req);
-      if (canUserAccessNote(user, note)) {
-        return res.json(note);
-      } else {
-        return res.json({
-          status: "fail",
-          message: "You are not authorized to view this note"
-        })
-      }
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+  const data = req.params;
+  let user = getAuthenticatedUser(req);
+  getNoteByID(data, user)
+  .then(note => res.json(note))
+  .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').delete((req, res) => {

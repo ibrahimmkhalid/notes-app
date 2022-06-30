@@ -8,16 +8,30 @@ function canUserAccessNote(user, note) {
 }
 
 module.exports = {
-  getAllNotes: function(user) {
+  // getAllNotes: function(user) {
+  //   if (user && user.admin == true) {
+  //     return Note.find();
+  //   } else if (user && user.admin == false) {
+  //     return Note.find().or([
+  //       {owner: null},
+  //       {owner: user.id}
+  //     ]);
+  //   } else {
+  //     return Note.find().or([
+  //       {owner: null}
+  //     ]);
+  //   }
+  // },
+  getAllNotes: async function(user) {
     if (user && user.admin == true) {
-      return Note.find();
+      return await Note.find();
     } else if (user && user.admin == false) {
-      return Note.find().or([
+      return await Note.find().or([
         {owner: null},
         {owner: user.id}
       ]);
     } else {
-      return Note.find().or([
+      return await Note.find().or([
         {owner: null}
       ]);
     }
@@ -29,6 +43,20 @@ module.exports = {
       owner: data.owner,
     });
     return newNote.save()
+  },
+  getNoteByID: function(data, user) {
+    if (user && user.admin == true) {
+      return Note.findById(data.id);
+    } else if (user && user.admin == false) {
+      return Note.findById(data.id).or([
+        {owner: null},
+        {owner: user.id}
+      ]);
+    } else {
+      return Note.findById(data.id).or([
+        {owner: null}
+      ]);
+    }
   }
 }
 
