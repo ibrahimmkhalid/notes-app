@@ -43,6 +43,6 @@ module.exports = {
       throw "Access Error";
     }
     note.delete();
- }
+  }
 }
 
