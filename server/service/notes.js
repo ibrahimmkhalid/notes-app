@@ -30,19 +30,12 @@ module.exports = {
     });
     return await newNote.save();
   },
-  getNoteByID: function(data, user) {
-    if (user && user.admin == true) {
-      return Note.findById(data.id);
-    } else if (user && user.admin == false) {
-      return Note.findById(data.id).or([
-        {owner: null},
-        {owner: user.id}
-      ]);
-    } else {
-      return Note.findById(data.id).or([
-        {owner: null}
-      ]);
+  getNoteByID: async function(data, user) {
+    const note = await Note.findById(data.id);
+    if (!canUserAccessNote(user, note)) {
+      throw "Access Error";
     }
+    return note;
   }
 }
 

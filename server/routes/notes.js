@@ -44,12 +44,16 @@ router.route('/add/private').post(verifyJWT, (req, res) => {
   }
 });
 
-router.route('/:id').get((req, res) => {
+router.route('/:id').get(async (req, res) => {
   const data = req.params;
   let user = getAuthenticatedUser(req);
-  getNoteByID(data, user)
-  .then(note => res.json(note))
-  .catch(err => res.status(400).json('Error: ' + err));
+  let note;
+  try {
+    note = await getNoteByID(data, user);
+    res.json(note);
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
 });
 
 router.route('/:id').delete((req, res) => {
