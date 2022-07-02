@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const {verifyJWT, getAuthenticatedUser} = require("../middleware/authenticate.js");
-let Note = require('../models/note.models.js');
 const {
   getAllNotes, 
   addNewNote, 
@@ -8,12 +7,6 @@ const {
   deleteNoteByID,
   editNoteByID
 } = require("../service/notes.js");
-
-function canUserAccessNote(user, note) {
-  return !note.owner
-    || (note.owner && user && note.owner == user.id)
-    || (user && user.admin == true);
-}
 
 router.route('/all').get(async (req, res) => {
   const user = getAuthenticatedUser(req);
