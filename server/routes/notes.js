@@ -1,7 +1,12 @@
 const router = require('express').Router();
 const {verifyJWT, getAuthenticatedUser} = require("../middleware/authenticate.js");
 let Note = require('../models/note.models.js');
-const {getAllNotes, addNewNote, getNoteByID} = require("../service/notes.js");
+const {
+  getAllNotes, 
+  addNewNote, 
+  getNoteByID,
+  deleteNoteByID
+} = require("../service/notes.js");
 
 function canUserAccessNote(user, note) {
   return !note.owner
@@ -56,21 +61,16 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
-router.route('/:id').delete((req, res) => {
-  Note.findById(req.params.id)
-    .then(note => {
-      let user = getAuthenticatedUser(req);
-      if (canUserAccessNote(user, note)) {
-        note.delete();
-        return res.json("Note Deleted");
-      } else {
-        return res.json({
-          status: "fail",
-          message: "You are not authorized to delete this note"
-        })
-      }
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+router.route('/:id').delete(async (req, res) => {
+  const data = req.params;
+  let user = getAuthenticatedUser(req);
+  let note;
+  try {
+    await deleteNoteByID(data, user);
+    res.json("Note Deleted!")
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
 });
 
 router.route('/update/:id').post((req, res) => {

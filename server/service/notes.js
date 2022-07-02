@@ -36,6 +36,13 @@ module.exports = {
       throw "Access Error";
     }
     return note;
-  }
+  },
+  deleteNoteByID: async function(data, user) {
+    const note = await Note.findById(data.id);
+    if (!canUserAccessNote(user, note)) {
+      throw "Access Error";
+    }
+    note.delete();
+ }
 }
 
