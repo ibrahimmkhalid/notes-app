@@ -18,29 +18,31 @@ router.route('/all').get(async (req, res) => {
   } catch (err) {
     res.status(400).json('Error: ' + err);
   }
-  // getAllNotes(user)
-  // .then(notes => res.json(notes))
-  // .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/add/public').post((req, res) => {
   const data = req.body;
   data.owner = null;
-
-  addNewNote(data)
-  .then(() => res.json('Note added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
- });
+  
+  try {
+    addNewNote(data);
+    res.json('Note Added!');
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
+});
 
 router.route('/add/private').post(verifyJWT, (req, res) => {
   const data = req.body;
   data.owner = req.user.id;
-
-  addNewNote(data)
-  .then(() => res.json('Private note added!'))
-  .catch(err => res.status(400).json('Error: ' + err));
+  
+  try {
+    addNewNote(data);
+    res.json('Private note Added!');
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
 });
-
 
 router.route('/:id').get((req, res) => {
   const data = req.params;

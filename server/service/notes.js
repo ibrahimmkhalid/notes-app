@@ -8,20 +8,6 @@ function canUserAccessNote(user, note) {
 }
 
 module.exports = {
-  // getAllNotes: function(user) {
-  //   if (user && user.admin == true) {
-  //     return Note.find();
-  //   } else if (user && user.admin == false) {
-  //     return Note.find().or([
-  //       {owner: null},
-  //       {owner: user.id}
-  //     ]);
-  //   } else {
-  //     return Note.find().or([
-  //       {owner: null}
-  //     ]);
-  //   }
-  // },
   getAllNotes: async function(user) {
     if (user && user.admin == true) {
       return await Note.find();
@@ -36,13 +22,13 @@ module.exports = {
       ]);
     }
   },
-  addNewNote: function(data) {
+  addNewNote: async function(data) {
     const newNote = new Note({
       title: data.title,
       text: data.text,
       owner: data.owner,
     });
-    return newNote.save()
+    return await newNote.save();
   },
   getNoteByID: function(data, user) {
     if (user && user.admin == true) {
