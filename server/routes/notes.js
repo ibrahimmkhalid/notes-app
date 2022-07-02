@@ -5,7 +5,8 @@ const {
   getAllNotes, 
   addNewNote, 
   getNoteByID,
-  deleteNoteByID
+  deleteNoteByID,
+  editNoteByID
 } = require("../service/notes.js");
 
 function canUserAccessNote(user, note) {
@@ -15,7 +16,7 @@ function canUserAccessNote(user, note) {
 }
 
 router.route('/all').get(async (req, res) => {
-  user = getAuthenticatedUser(req);
+  const user = getAuthenticatedUser(req);
   let notes;
   try {
     notes = await getAllNotes(user);
@@ -51,7 +52,7 @@ router.route('/add/private').post(verifyJWT, (req, res) => {
 
 router.route('/:id').get(async (req, res) => {
   const data = req.params;
-  let user = getAuthenticatedUser(req);
+  const user = getAuthenticatedUser(req);
   let note;
   try {
     note = await getNoteByID(data, user);
@@ -63,8 +64,7 @@ router.route('/:id').get(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const data = req.params;
-  let user = getAuthenticatedUser(req);
-  let note;
+  const user = getAuthenticatedUser(req);
   try {
     await deleteNoteByID(data, user);
     res.json("Note Deleted!")
@@ -73,25 +73,18 @@ router.route('/:id').delete(async (req, res) => {
   }
 });
 
-router.route('/update/:id').post((req, res) => {
-  Note.findById(req.params.id)
-    .then(note => {
-      let user = getAuthenticatedUser(req);
-      if (canUserAccessNote(user, note)) {
-        note.title = req.body.title;
-        note.text = req.body.text;
-
-        note.save()
-          .then(() => res.json('Note updated!'))
-          .catch(err => res.status(400).json('Error: ' + err));
-      } else {
-        return res.json({
-          status: "fail",
-          message: "You are not authorized to edit this note"
-        })
-      }
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+router.route('/update/:id').post(async (req, res) => {
+  const data = {
+    ...req.params,
+    ...req.body
+  };
+  const user = getAuthenticatedUser(req);
+  try {
+    await editNoteByID(data, user);
+    res.json("Note Edited!");
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
 });
 
 module.exports = router;
