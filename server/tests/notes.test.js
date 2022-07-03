@@ -55,10 +55,6 @@ describe('Get all notes', () => {
         text: 'text for note 1',
         owner: 1
       },{
-        title: 'Note 2',
-        text: 'text for note 2',
-        owner: 2
-      },{
         title: 'Note 3',
         text: 'text for note 3',
         owner: null
