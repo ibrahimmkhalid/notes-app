@@ -3,7 +3,7 @@ const NoteService = require("../service/notes.js");
 const mockingoose = require('mockingoose');
 const mongoose = require('mongoose');
 
-describe('Get all notes', () => {
+describe('Get all notes directly from server', () => {
   let _user1_id = new mongoose.Types.ObjectId();
   let _user2_id = new mongoose.Types.ObjectId();
 
@@ -34,4 +34,33 @@ describe('Get all notes', () => {
     const data = await NoteService.getAllNotes(user);
     await expect(data).toMatchObject(_data);
   });
+
+  it.only('Should show list of all notes available to a non admin user', async () => {
+    mockingoose(Note).toReturn([
+      _data[0],
+      _data[2]
+    ], 'find');
+    user = {};
+    user.id = _user1_id;
+    user.username = "user"
+    user.admin = false;
+
+    const data = await NoteService.getAllNotes(user);
+    await expect(data).toMatchObject([
+      _data[0],
+      _data[2]
+    ]);
+  });
+
+  it.only('Should show list of all notes avaialable to a logged out user', async () => {
+    mockingoose(Note).toReturn([
+      _data[2]
+    ], 'find');
+    user = null;
+
+    const data = await NoteService.getAllNotes(user);
+    await expect(data).toMatchObject([
+      _data[2]
+    ]);
+  })
 });
