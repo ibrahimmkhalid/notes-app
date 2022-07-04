@@ -1,5 +1,5 @@
-const Note = require("../models/note.models.js");
-const NoteService = require("../service/notes.js");
+const Note = require("../../models/note.models.js");
+const NoteService = require("../../service/notes.js");
 const mockingoose = require('mockingoose');
 const mongoose = require('mongoose');
 
