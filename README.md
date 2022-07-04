@@ -15,7 +15,7 @@ MERN app with multiple user authentication
     - Images ❌
   - implement basic search api ✔ 
 - implement unit tests for backend ❌
--frontend ❌
+- frontend ❌
   - build basic frontend in React.JS (Mobile and Desktop) ❌
   - implement unit tests for frontend ❌
 
