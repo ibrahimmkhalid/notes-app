@@ -64,3 +64,32 @@ describe('Get all notes directly from server', () => {
     ]);
   })
 });
+
+describe('Add notes', () => {
+  let _data = {
+    title: 'Note 1',
+    text: 'text for note 1',
+    owner: new mongoose.Types.ObjectId()
+  };
+
+  it.only('Should add note and return that object with owner', async () => {
+    mockingoose(Note).toReturn(_data, 'save');
+
+    const data = await NoteService.addNewNote(_data);
+    await expect(data).toMatchObject(_data);
+  });
+
+  _data = {
+    title: 'Note 1',
+    text: 'text for note 1',
+    owner: null
+  };
+
+  it.only('Should add note and return that object without owner', async () => {
+    mockingoose(Note).toReturn(_data, 'save');
+
+    const data = await NoteService.addNewNote(_data);
+    await expect(data).toMatchObject(_data);
+  });
+
+});
