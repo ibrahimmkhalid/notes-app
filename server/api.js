@@ -30,4 +30,3 @@ app.use('/search', searchRouter);
 
 app.listen(PORT, HOST);
 console.log(`Running on http://${HOST}:${PORT}`);
-
