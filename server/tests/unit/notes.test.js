@@ -93,3 +93,62 @@ describe('Add notes', () => {
   });
 
 });
+
+describe('Get note by id', () => {
+  let _user1_id = new mongoose.Types.ObjectId();
+  let _user2_id = new mongoose.Types.ObjectId();
+  let _note0_id = new mongoose.Types.ObjectId();
+  let _note1_id = new mongoose.Types.ObjectId();
+  let _note2_id = new mongoose.Types.ObjectId();
+
+  let _data = [
+    {
+      _id: _note0_id,
+      title: 'Note 1',
+      text: 'text for note 1',
+      owner: _user1_id
+    },{
+      _id: _note1_id,
+      title: 'Note 2',
+      text: 'text for note 2',
+      owner: _user2_id
+    },{
+      _id: _note2_id,
+      title: 'Note 3',
+      text: 'text for note 3',
+      owner: null
+    }
+  ];
+
+
+  it.only('Should get any note if user is admin', async () => {
+    user = {};
+    user.id = _user1_id;
+    user.username = "user"
+    user.admin = true;
+
+    mockingoose(Note).toReturn(_data[0], 'findById');
+    m_data = {
+      id: _note0_id
+    }
+    let data = await NoteService.getNoteByID(m_data, user);
+    await expect(data).toMatchObject(_data[0]);
+  //
+  //   mockingoose(Note).toReturn(_data[1], 'find');
+  //   m_data = {
+  //     id: _note1_id
+  //   }
+  //   data = await NoteService.getNoteByID(m_data, user);
+  //   await expect(data).toMatchObject(_data[1]);
+  //
+  //
+  //   mockingoose(Note).toReturn(_data[2], 'find');
+  //   m_data = {
+  //     id: _note2_id
+  //   }
+  //   data = await NoteService.getNoteByID(m_data, user);
+  //   await expect(data).toMatchObject(_data[2]);
+  });
+});
+
+
