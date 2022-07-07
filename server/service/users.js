@@ -15,11 +15,11 @@ module.exports ={
         username: data.username,
         password: hashedPassword ,
       });
-      await newUser.save();
+      return await newUser.save();
     }
   },
   loginUser: async function(data) {
-    const user = await User.findOne({username: data.username}).select('password');
+    const user = await User.findOne({username: data.username}).select(['password', 'admin', 'username']);
     return await authenticateLogin(data, user);
   }
 }
