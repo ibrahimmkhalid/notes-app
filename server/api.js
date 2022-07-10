@@ -12,14 +12,12 @@ const HOST = process.env.HOST;
 
 const notesRouter = require('./routes/notes');
 const usersRouter = require('./routes/users');
-const searchRouter = require('./routes/search');
 
 app.use(cors());
 app.use(express.json());
 
 app.use('/notes', notesRouter);
 app.use('/', usersRouter);
-app.use('/search', searchRouter);
 
 const MONGODB_URI = `mongodb+srv://${db.MONGODB_USERNAME}:${db.MONGODB_PASSWORD}@${db.MONGODB_CLUSTER}/?retryWrites=true&w=majority`;
 mongoose.connect(MONGODB_URI);
