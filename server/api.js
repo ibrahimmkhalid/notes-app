@@ -19,7 +19,12 @@ app.use(express.json());
 app.use('/notes', notesRouter);
 app.use('/', usersRouter);
 
-const MONGODB_URI = `mongodb+srv://${db.MONGODB_USERNAME}:${db.MONGODB_PASSWORD}@${db.MONGODB_CLUSTER}/?retryWrites=true&w=majority`;
+let MONGODB_URI;
+if (process.env.NODE_ENV === 'test') {
+  MONGODB_URI = `mongodb://127.0.0.1:27017/notes/?retryWrites=true&w=majority`;
+} else {
+  MONGODB_URI = `mongodb+srv://${db.MONGODB_USERNAME}:${db.MONGODB_PASSWORD}@${db.MONGODB_CLUSTER}/?retryWrites=true&w=majority`;
+}
 mongoose.connect(MONGODB_URI);
 
 const connection = mongoose.connection;
