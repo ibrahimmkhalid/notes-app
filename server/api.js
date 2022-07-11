@@ -21,7 +21,7 @@ app.use('/', usersRouter);
 
 let MONGODB_URI;
 if (process.env.NODE_ENV === 'test') {
-  MONGODB_URI = `mongodb://127.0.0.1:27017/notes/?retryWrites=true&w=majority`;
+  MONGODB_URI = 'mongodb://127.0.0.1:27017/notes';
 } else {
   MONGODB_URI = `mongodb+srv://${db.MONGODB_USERNAME}:${db.MONGODB_PASSWORD}@${db.MONGODB_CLUSTER}/?retryWrites=true&w=majority`;
 }
