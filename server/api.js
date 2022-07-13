@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const db = require("./config/db.config.js");
 
-const app = express();
+const api = express();
 
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
@@ -13,11 +13,11 @@ const HOST = process.env.HOST;
 const notesRouter = require('./routes/notes');
 const usersRouter = require('./routes/users');
 
-app.use(cors());
-app.use(express.json());
+api.use(cors());
+api.use(express.json());
 
-app.use('/notes', notesRouter);
-app.use('/', usersRouter);
+api.use('/notes', notesRouter);
+api.use('/', usersRouter);
 
 let MONGODB_URI;
 if (process.env.NODE_ENV === 'test') {
@@ -30,7 +30,8 @@ mongoose.connect(MONGODB_URI);
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
-  app.listen(PORT, HOST);
+  api.listen(PORT, HOST);
   console.log(`Running on http://${HOST}:${PORT}`);
 });
 
+module.exports = api;
