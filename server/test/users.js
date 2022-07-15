@@ -13,12 +13,10 @@ let mockUsersData = {
   user1: {
     username: 'user1',
     password: 'user1',
-    admin: true,
   },
   user2: {
     username: 'user2',
     password: 'user2',
-    admin: false,
   },
 }
 
