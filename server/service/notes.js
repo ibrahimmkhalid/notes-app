@@ -1,4 +1,3 @@
-const {verifyJWT, getAuthenticatedUser} = require("../middleware/authenticate.js");
 let Note = require('../models/note.models.js');
 
 function canUserAccessNote(user, note) {
