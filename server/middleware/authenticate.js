@@ -1,16 +1,17 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const responseHelper = require('../service/response.js');
 
 module.exports = {
   verifyJWT: function(req, res, next) {
     const token = req.headers["authorization"]?.split(' ')[1];
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) return res.status(400).json({
-          status: "fail",
-          message: "Failed to authenticate",
-          isLoggedIn: false
-        });
+        if (err) {
+          responseHelper(res, async () => {
+            throw {authentication: ["Failed to authenticate"]}
+          });
+        } 
         req.user = {};
         req.user.id = decoded.id;
         req.user.username = decoded.username;
@@ -18,11 +19,9 @@ module.exports = {
         next();
       });
     } else {
-      res.status(400).json({
-        status: "fail",
-        message: "Incorrect Token!",
-        isLoggedIn: false,
-      })
+      responseHelper(res, async () => {
+        throw {authentication: ["Incorrect Token"]}
+      });
     }
   },
   getAuthenticatedUser: function(req) {
