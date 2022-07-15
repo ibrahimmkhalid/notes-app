@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const responseHelper = require('../service/response.js');
 const {
   createUser,
   loginUser
@@ -6,25 +7,22 @@ const {
 
 router.route('/register').post(async (req, res) => {
   const data = req.body;
-  try {
+  await responseHelper(res, async () => {
     const user = await createUser(data);
-    if (!user) throw "There was an error creating your user";
+    if (user) {
+      throw {general: ["There was an error creating your user"]};
+    }
     const token = await loginUser(data);
-    res.json({token});
-  } catch (err) {
-    res.status(400).json('Error: ' + err);
-  }
+    return {token};
+  });
 });
 
 router.route('/login').post(async (req, res) => {
   const data = req.body;
-
-  try {
+  await responseHelper(res, async () => {
     const token = await loginUser(data);
-    res.json({token});
-  } catch (err) {
-    res.status(400).json('Error: ' + err);
-  }
+    return {token};
+  });
 });
 
 module.exports = router;

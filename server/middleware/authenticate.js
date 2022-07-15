@@ -38,12 +38,12 @@ module.exports = {
   },
   authenticateLogin: async function(data, user) {
     if (!user) {
-      throw "User does not exist!";
+      throw {authentication: ["User does not exist!"]}
     }
 
     const match = await bcrypt.compare(data.password, user.password);
     if (!match) {
-      throw "Password does not match!";
+      throw {authentication: ["Password does not match!"]}
     }
 
     const payload = {
