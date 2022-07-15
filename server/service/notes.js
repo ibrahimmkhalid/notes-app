@@ -1,9 +1,16 @@
 let Note = require('../models/note.models.js');
+const validation = require("./validations/notes.js");
 
-function canUserAccessNote(user, note) {
-  return !note.owner
-    || (note.owner && user && note.owner == user.id)
-    || (user && user.admin == true);
+function checkIfUserCanAccessNote(user, note) {
+    
+  if(!
+      (!note.owner
+      || (note.owner && user && note.owner == user.id)
+      || (user && user.admin == true)
+      )
+    ) {
+      throw {authentication: ["User does not have permission to access this note"]};
+    }
 }
 
 module.exports = {
@@ -22,6 +29,7 @@ module.exports = {
     }
   },
   addNewNote: async function(data) {
+    validation.addNewNote(data);
     const newNote = new Note({
       title: data.title,
       text: data.text,
@@ -30,24 +38,21 @@ module.exports = {
     return await newNote.save();
   },
   getNoteByID: async function(data, user) {
+    validation.getNoteByID(data);
     const note = await Note.findById(data.id);
-    if (!canUserAccessNote(user, note)) {
-      throw "Access Error";
-    }
+    checkIfUserCanAccessNote(user, note)
     return note;
   },
   deleteNoteByID: async function(data, user) {
+    validation.deleteNoteByID(data);
     const note = await Note.findById(data.id);
-    if (!canUserAccessNote(user, note)) {
-      throw "Access Error";
-    }
+    checkIfUserCanAccessNote(user, note)
     note.delete();
   },
   editNoteByID: async function(data, user) {
+    validation.editNoteByID(data);
     const note = await Note.findById(data.id);
-    if (!canUserAccessNote(user, note)) {
-      throw "Access Error";
-    }
+    checkIfUserCanAccessNote(user, note)
     note.title = data.title ? data.title : note.title
     note.text = data.text ? data.text : note.text
     note.save();
