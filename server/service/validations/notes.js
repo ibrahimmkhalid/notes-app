@@ -10,7 +10,10 @@ module.exports = {
     }
 
     if (err.length !== 0) {
-      throw {validation: err};
+      throw {
+        code: 400,
+        validation: err
+      };
     }
   },
   getNoteByID: function(data, user) {
@@ -20,7 +23,10 @@ module.exports = {
     }
 
     if (err.length !== 0) {
-      throw {validation: err};
+      throw {
+        code: 400,
+        validation: err
+      };
     }
   },
   deleteNoteByID: function(data, user) {
@@ -30,7 +36,10 @@ module.exports = {
     }
 
     if (err.length !== 0) {
-      throw {validation: err};
+      throw {
+        code: 400,
+        validation: err
+      };
     }
   },
   editNoteByID: function(data, user) {
@@ -40,7 +49,10 @@ module.exports = {
     }
 
     if (err.length !== 0) {
-      throw {validation: err};
+      throw {
+        code: 400,
+        validation: err
+      };
     }
   }
 }

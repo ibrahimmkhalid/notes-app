@@ -9,7 +9,10 @@ module.exports = {
       err.push("'password' is a required field");
     }
     if (err.length !== 0) {
-      throw {validation: err};
+      throw {
+        validation: err,
+        code: 400
+      };
     }
   },
   loginUser: function(data) {
@@ -22,7 +25,10 @@ module.exports = {
       err.push("'password' is a required field");
     }
     if (err.length !== 0) {
-      throw {validation: err};
+      throw {
+        validation: err,
+        code: 400
+      };
     }
   }
 }

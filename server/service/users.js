@@ -9,7 +9,10 @@ module.exports ={
     const takenUsername = await User.findOne({username: data.username});
 
     if (takenUsername) {
-      throw {validation: ["Username is already taken!"]};
+      throw {
+        code: 400,
+        validation: ["Username is already taken!"]
+      };
     } else {
       let hashedPassword = await bcrypt.hash(data.password, 10);
       const newUser = User({

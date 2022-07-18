@@ -9,7 +9,10 @@ function checkIfUserCanAccessNote(user, note) {
       || (user && user.admin == true)
       )
     ) {
-      throw {authentication: ["User does not have permission to access this note"]};
+      throw {
+        code: 401,
+        authentication: ["User does not have permission to access this note"]
+      };
     }
 }
 

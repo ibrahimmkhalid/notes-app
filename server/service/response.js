@@ -7,7 +7,9 @@ function responseHelper(res, callback) {
       });
     })
     .catch((error) => {
-      res.status(500).json({
+      let code = error.code ? error.code : 500;
+      delete error.code;
+      res.status(code).json({
         status: 'fail',
         error: error
       });

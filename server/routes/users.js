@@ -7,7 +7,10 @@ router.route('/register').post(async (req, res) => {
   await responseHelper(res, async () => {
     const user = await service.createUser(data);
     if (!user) {
-      throw {general: ["There was an error creating your user"]};
+      throw {
+        general: ["There was an error creating your user"],
+        code: 500
+      };
     }
     const token = await service.loginUser(data);
     return {token};

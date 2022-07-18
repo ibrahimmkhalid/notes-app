@@ -9,7 +9,10 @@ module.exports = {
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
           responseHelper(res, async () => {
-            throw {authentication: ["Failed to authenticate"]}
+            throw {
+              code: 401,
+              authentication: ["Failed to authenticate"]
+            };
           });
         } 
         req.user = {};
@@ -20,7 +23,10 @@ module.exports = {
       });
     } else {
       responseHelper(res, async () => {
-        throw {authentication: ["Incorrect Token"]}
+        throw {
+          code: 401,
+          authentication: ["Incorrect Token"]
+        }
       });
     }
   },
@@ -37,12 +43,18 @@ module.exports = {
   },
   authenticateLogin: async function(data, user) {
     if (!user) {
-      throw {authentication: ["User does not exist!"]}
+      throw {
+        code: 401,
+        authentication: ["User does not exist!"]
+      }
     }
 
     const match = await bcrypt.compare(data.password, user.password);
     if (!match) {
-      throw {authentication: ["Password does not match!"]}
+      throw {
+        code: 401,
+        authentication: ["Password does not match!"]
+      }
     }
 
     const payload = {

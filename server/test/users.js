@@ -43,7 +43,7 @@ describe('Users', () => {
         .post('/register')
         .send({})
         .end((err, res) => {
-          expect(res.status).to.eq(500);
+          expect(res.status).to.eq(400);
           expect(res.body).to.have.property('error');
           expect(res.body.error).to.have.property('validation');
           expect(res.body.error.validation).to.include("'username' is a required field");
@@ -52,7 +52,7 @@ describe('Users', () => {
             .post('/register')
             .send({ username: 'test' })
             .end((err, res) => {
-              expect(res.status).to.eq(500);
+              expect(res.status).to.eq(400);
               expect(res.body).to.have.property('error');
               expect(res.body.error).to.have.property('validation');
               expect(res.body.error.validation).to.include("'password' is a required field");
@@ -60,7 +60,7 @@ describe('Users', () => {
                 .post('/register')
                 .send({ password: 'test' })
                 .end((err, res) => {
-                  expect(res.status).to.eq(500);
+                  expect(res.status).to.eq(400);
                   expect(res.body).to.have.property('error');
                   expect(res.body.error).to.have.property('validation');
                   expect(res.body.error.validation).to.include("'username' is a required field");
@@ -107,7 +107,7 @@ describe('Users', () => {
             .post('/register')
             .send(mockUsersData.user1)
             .end((err, res) => {
-              expect(res.status).to.eq(500);
+              expect(res.status).to.eq(400);
               expect(res.body).to.have.property('error');
               expect(res.body.error).to.have.property('validation');
               expect(res.body.error.validation).to.include('Username is already taken!');
@@ -156,7 +156,7 @@ describe('Users', () => {
             .post('/login')
             .send(_data)
             .end((err, res) => {
-              expect(res.status).to.eq(500);
+              expect(res.status).to.eq(401);
               expect(res.body).to.have.property('error')
               expect(res.body.error).to.have.property('authentication');
               expect(res.body.error.authentication).to.include('Password does not match!');
@@ -170,7 +170,7 @@ describe('Users', () => {
         .post('/login')
         .send(mockUsersData.user1)
         .end((err, res) => {
-          expect(res.status).to.eq(500);
+          expect(res.status).to.eq(401);
           expect(res.body).to.have.property('error')
           expect(res.body.error).to.have.property('authentication');
           expect(res.body.error.authentication).to.include('User does not exist!');
