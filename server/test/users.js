@@ -33,7 +33,7 @@ describe('Users', () => {
         .send(mockUsersData.user1)
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
           done();
         });
     });
@@ -43,17 +43,27 @@ describe('Users', () => {
         .post('/register')
         .send({})
         .end((err, res) => {
-          expect(res.status).to.eq(400);
+          expect(res.status).to.eq(500);
+          expect(res.body).to.have.property('error');
+          expect(res.body.error).to.have.property('validation');
+          expect(res.body.error.validation).to.include("'username' is a required field");
+          expect(res.body.error.validation).to.include("'password' is a required field");
           request(api)
             .post('/register')
             .send({ username: 'test' })
             .end((err, res) => {
-              expect(res.status).to.eq(400);
+              expect(res.status).to.eq(500);
+              expect(res.body).to.have.property('error');
+              expect(res.body.error).to.have.property('validation');
+              expect(res.body.error.validation).to.include("'password' is a required field");
               request(api)
                 .post('/register')
                 .send({ password: 'test' })
                 .end((err, res) => {
-                  expect(res.status).to.eq(400);
+                  expect(res.status).to.eq(500);
+                  expect(res.body).to.have.property('error');
+                  expect(res.body.error).to.have.property('validation');
+                  expect(res.body.error.validation).to.include("'username' is a required field");
                   request(api)
                     .post('/register')
                     .send({ password: 'test', username: 'test' })
@@ -72,14 +82,14 @@ describe('Users', () => {
         .send(mockUsersData.user1)
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
 
           request(api)
             .post('/register')
             .send(mockUsersData.user2)
             .end((err, res) => {
               expect(res.status).to.eq(200);
-              expect(res.body).to.have.property('token');
+              expect(res.body.data).to.have.property('token');
               done();
             });
         });
@@ -91,14 +101,16 @@ describe('Users', () => {
         .send(mockUsersData.user1)
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
 
           request(api)
             .post('/register')
             .send(mockUsersData.user1)
             .end((err, res) => {
-              expect(res.status).to.eq(400);
-              expect(res.body).to.have.string('Error: Username is already taken!');
+              expect(res.status).to.eq(500);
+              expect(res.body).to.have.property('error');
+              expect(res.body.error).to.have.property('validation');
+              expect(res.body.error.validation).to.include('Username is already taken!');
               done();
             });
         });
@@ -113,14 +125,14 @@ describe('Users', () => {
         .send(mockUsersData.user1)
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
 
           request(api)
             .post('/login')
             .send(mockUsersData.user1)
             .end((err, res) => {
               expect(res.status).to.eq(200);
-              expect(res.body).to.have.property('token');
+              expect(res.body.data).to.have.property('token');
               done();
             });
         });
@@ -132,7 +144,7 @@ describe('Users', () => {
         .send(mockUsersData.user1)
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          expect(res.body).to.have.property('token');
+          expect(res.body.data).to.have.property('token');
 
           //different password
           let _data = {
@@ -144,8 +156,10 @@ describe('Users', () => {
             .post('/login')
             .send(_data)
             .end((err, res) => {
-              expect(res.status).to.eq(400);
-              expect(res.body).to.have.string('Error: Password does not match!');
+              expect(res.status).to.eq(500);
+              expect(res.body).to.have.property('error')
+              expect(res.body.error).to.have.property('authentication');
+              expect(res.body.error.authentication).to.include('Password does not match!');
               done();
             });
         });
@@ -156,8 +170,10 @@ describe('Users', () => {
         .post('/login')
         .send(mockUsersData.user1)
         .end((err, res) => {
-          expect(res.status).to.eq(400);
-          expect(res.body).to.have.string('Error: User does not exist!');
+          expect(res.status).to.eq(500);
+          expect(res.body).to.have.property('error')
+          expect(res.body.error).to.have.property('authentication');
+          expect(res.body.error.authentication).to.include('User does not exist!');
           done();
         });
     });
