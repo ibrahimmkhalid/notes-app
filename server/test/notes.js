@@ -27,7 +27,14 @@ let mockUsersData = {
 }
 
 describe('Notes', () => {
+  beforeAll((done) => {
+    User.create(mockUsersData, (err) => {
+      done();
+    });
+  });
   beforeEach((done) => {
-
+    User.deleteMany({}, (err) => {
+      done();
+    })
   });
 })
