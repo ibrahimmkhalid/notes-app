@@ -1,4 +1,3 @@
-const router = require('express').Router();
 const {authenticateLogin} = require("../middleware/authenticate.js");
 const bcrypt = require("bcrypt");
 const validation = require("./validations/users.js");
