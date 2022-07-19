@@ -61,6 +61,28 @@ describe('Notes', () => {
         })
     });
 
+    it('gets only the notes for that user', async () => {
+      let token = await login(mockUsersData[1]);
+      request(api)
+        .get('/notes/all')
+        .set('Authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.data.notes).to.be.an('array');
+          expect(res.body.data.notes).to.have.lengthOf(4);
+        })
+    });
+
+    it('gets only public notes for logged out users', async () => {
+      request(api)
+        .get('/notes/all')
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.data.notes).to.be.an('array');
+          expect(res.body.data.notes).to.have.lengthOf(2);
+        })
+    });
+
   });
 
   after(async () => {
