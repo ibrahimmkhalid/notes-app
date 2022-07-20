@@ -83,7 +83,46 @@ describe('Notes', () => {
         })
     });
 
+    after(async () => {
+      await Note.deleteMany({});
+    })
   });
+
+  describe('Get a specific note', () => {
+    before(async () => {
+      let user = await User.findOne({username: 'user1'});
+      await Note.create([
+        { title:'u1n1', text:'u1n1', owner: user.id },
+        { title:'u1n2', text:'u1n2', owner: user.id }
+      ]);
+      user = await User.findOne({username: 'user2'});
+      await Note.create([
+        { title:'u2n1', text:'u2n1', owner: user.id },
+        { title:'u2n2', text:'u2n2', owner: user.id }
+      ]);
+      await Note.create([
+        { title:'uxn1', text:'uxn1', owner: null },
+        { title:'uxn2', text:'uxn2', owner: null }
+      ]);
+    });
+
+    it('gets any note if user is an admin', async () => {
+      let token = await login(mockUsersData[0]);
+      let note = await Note.findOne({title: 'u1n1'});
+      let id = note.id;
+      request(api)
+        .get(`/notes/${id}`)
+        .set('Authorization', token)
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.data.note.id).to.eq(note.id);
+        })
+    });
+
+    after(async () => {
+      await Note.deleteMany({});
+    })
+  })
 
   after(async () => {
     await User.deleteMany({});
