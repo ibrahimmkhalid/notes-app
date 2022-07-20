@@ -11,7 +11,7 @@ const noteSchema = new Schema({
 });
 
 noteSchema.set('toJSON', {
-    virtuals: true
+  virtuals: true
 });
 
 const Note = mongoose.model('Note', noteSchema);
