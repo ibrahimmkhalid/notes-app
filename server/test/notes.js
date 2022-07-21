@@ -189,6 +189,27 @@ describe('Notes', () => {
       expect(res.body.data.note.id).to.eq(note.id);
     });
 
+    it('fails if bad id is given', async () => {
+      let note = await Note.findOne({title: 'uxn1'});
+      let id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
+
+      id = 'fails-validation';
+      res = await request(api)
+        .get(`/notes/${id}`)
+      expect(res.status).to.eq(400);
+      expect(res.body).to.have.property('error');
+      expect(res.body.error).to.have.property('validation');
+      expect(res.body.error.validation).to.include("invalid ObjectId");
+
+      res = await request(api)
+        .get(`/notes/`)
+      expect(res.status).to.eq(404);
+    })
+
     after(async () => {
       await Note.deleteMany({});
     })

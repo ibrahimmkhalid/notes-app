@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 module.exports = {
   addNewNote: function(data) {
     err = [];
@@ -20,6 +21,10 @@ module.exports = {
     err = [];
     if (!data.id) {
       err.push("'id' is a required field");
+    }
+
+    if(!mongoose.isValidObjectId(data.id)) {
+      err.push("invalid ObjectId")
     }
 
     if (err.length !== 0) {
