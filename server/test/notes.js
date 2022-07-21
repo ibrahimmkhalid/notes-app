@@ -110,13 +110,83 @@ describe('Notes', () => {
       let token = await login(mockUsersData[0]);
       let note = await Note.findOne({title: 'u1n1'});
       let id = note.id;
-      request(api)
+      res = await request(api)
         .get(`/notes/${id}`)
         .set('Authorization', token)
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          expect(res.body.data.note.id).to.eq(note.id);
-        })
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
+
+      note = await Note.findOne({title: 'u2n1'});
+      id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+        .set('Authorization', token)
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
+
+      note = await Note.findOne({title: 'uxn1'});
+      id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+        .set('Authorization', token)
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
+    });
+
+    it('gets only those notes by id which the user has access to', async () => {
+      let token = await login(mockUsersData[1]);
+      let note = await Note.findOne({title: 'u1n1'});
+      let id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+        .set('Authorization', token)
+      expect(res.status).to.eq(401);
+      expect(res.body).to.have.property('error');
+      expect(res.body.error).to.have.property('authentication');
+      expect(res.body.error.authentication).to.include("User does not have permission to access this note");
+
+      note = await Note.findOne({title: 'u2n1'});
+      id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+        .set('Authorization', token)
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
+
+      note = await Note.findOne({title: 'uxn1'});
+      id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+        .set('Authorization', token)
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
+    });
+
+    it('gets only public notes by id if user is logged out', async () => {
+      let note = await Note.findOne({title: 'u1n1'});
+      let id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+      expect(res.status).to.eq(401);
+      expect(res.body).to.have.property('error');
+      expect(res.body.error).to.have.property('authentication');
+      expect(res.body.error.authentication).to.include("User does not have permission to access this note");
+
+      note = await Note.findOne({title: 'u2n1'});
+      id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+      expect(res.status).to.eq(401);
+      expect(res.body).to.have.property('error');
+      expect(res.body.error).to.have.property('authentication');
+      expect(res.body.error.authentication).to.include("User does not have permission to access this note");
+
+      note = await Note.findOne({title: 'uxn1'});
+      id = note.id;
+      res = await request(api)
+        .get(`/notes/${id}`)
+      expect(res.status).to.eq(200);
+      expect(res.body.data.note.id).to.eq(note.id);
     });
 
     after(async () => {
