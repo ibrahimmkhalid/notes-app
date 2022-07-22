@@ -197,6 +197,16 @@ describe('Notes', () => {
       expect(res.status).to.eq(200);
       expect(res.body.data.note.id).to.eq(note.id);
 
+      //id of deleted note
+      await Note.deleteOne({title: 'uxn1'});
+      res = await request(api)
+        .get(`/notes/${id}`)
+      expect(res.status).to.eq(404);
+      expect(res.body).to.have.property('error')
+      expect(res.body.error).to.have.property('database')
+      expect(res.body.error.database).to.include('This resource could not be found')
+
+      //bad id
       id = 'fails-validation';
       res = await request(api)
         .get(`/notes/${id}`)
@@ -205,6 +215,7 @@ describe('Notes', () => {
       expect(res.body.error).to.have.property('validation');
       expect(res.body.error.validation).to.include("invalid ObjectId");
 
+      // no id
       res = await request(api)
         .get(`/notes/`)
       expect(res.status).to.eq(404);

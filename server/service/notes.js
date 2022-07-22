@@ -43,6 +43,12 @@ module.exports = {
   getNoteByID: async function(data, user) {
     validation.getNoteByID(data);
     const note = await Note.findById(data.id);
+    if (!note) {
+      throw {
+        code: 404,
+        database: ["This resource could not be found"]
+      }
+    }
     checkIfUserCanAccessNote(user, note)
     return note;
   },
