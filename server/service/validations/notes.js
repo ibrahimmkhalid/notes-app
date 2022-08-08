@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 module.exports = {
   addNewNote: function(data) {
-    err = [];
+    let err = [];
     if (!data.title) {
       err.push("'title' is a required field");
     }
@@ -18,7 +18,7 @@ module.exports = {
     }
   },
   getNoteByID: function(data, user) {
-    err = [];
+    let err = [];
     if (!data.id) {
       err.push("'id' is a required field");
     }
@@ -35,7 +35,7 @@ module.exports = {
     }
   },
   deleteNoteByID: function(data, user) {
-    err = [];
+    let err = [];
     if (!data.id) {
       err.push("'id' is a required field");
     }
@@ -48,7 +48,7 @@ module.exports = {
     }
   },
   editNoteByID: function(data, user) {
-    err = [];
+    let err = [];
     if (!data.id) {
       err.push("'id' is a required field");
     }
