@@ -6,6 +6,7 @@ let Note = require('../models/note.models.js')
 let chai = require('chai')
 let request = require('supertest')
 let api = require('../api.js')
+const { after, before, describe, it } = require('mocha')
 
 const expect = chai.expect
 
@@ -212,6 +213,128 @@ describe('Notes', () => {
       // no id
       res = await request(api).get(`/notes/`)
       expect(res.status).to.eq(404)
+    })
+
+    after(async () => {
+      await Note.deleteMany({})
+    })
+  })
+
+  describe('Add a note', () => {
+    it('adds a public note from logged out user with good data', async () => {
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let res = await request(api).post('/notes/add/public').send(post_data)
+      expect(res.status).to.eq(200)
+      expect(res.body).to.have.property('data')
+      expect(res.body.data).to.have.property('note')
+      expect(res.body.data.note).to.have.property('title')
+      expect(res.body.data.note).to.have.property('text')
+      expect(res.body.data.note).to.have.property('owner')
+      expect(res.body.data.note.title).to.eq('title')
+      expect(res.body.data.note.text).to.eq('text')
+      expect(res.body.data.note.owner).to.eq(null)
+    })
+
+    it('adds a public note from logged in user with good data', async () => {
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+      let token = await login(mockUsersData[0])
+      let res = await request(api)
+        .post('/notes/add/public')
+        .set('Authorization', token)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      expect(res.body).to.have.property('data')
+      expect(res.body.data).to.have.property('note')
+      expect(res.body.data.note).to.have.property('title')
+      expect(res.body.data.note).to.have.property('text')
+      expect(res.body.data.note).to.have.property('owner')
+      expect(res.body.data.note.title).to.eq('title')
+      expect(res.body.data.note.text).to.eq('text')
+      expect(res.body.data.note.owner).to.eq(null)
+    })
+
+    it('adds a private note from logged in user with good data', async () => {
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+      let token = await login(mockUsersData[0])
+      let res = await request(api)
+        .post('/notes/add/private')
+        .set('Authorization', token)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      expect(res.body).to.have.property('data')
+      expect(res.body.data).to.have.property('note')
+      expect(res.body.data.note).to.have.property('title')
+      expect(res.body.data.note).to.have.property('text')
+      expect(res.body.data.note).to.have.property('owner')
+      expect(res.body.data.note.title).to.eq('title')
+      expect(res.body.data.note.text).to.eq('text')
+      expect(res.body.data.note.owner).to.not.eq(null)
+    })
+
+    it('tries to add a private note from logged out user', async () => {
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+      let res = await request(api)
+        .post('/notes/add/private')
+        .send(post_data)
+      expect(res.status).to.eq(401)
+      expect(res.body).to.have.property("error")
+      expect(res.body.error).to.have.property("authentication")
+      expect(res.body.error.authentication).to.include(
+        'Incorrect Token'
+      )
+    })
+
+    it('tries to add a note with bad data', async () => {
+      let post_data = {
+        text: 'text',
+      }
+      let res = await request(api)
+        .post('/notes/add/public')
+        .send(post_data)
+      expect(res.status).to.eq(400)
+      expect(res.body).to.have.property("error")
+      expect(res.body.error).to.have.property("validation")
+      expect(res.body.error.validation).to.include(
+        "'title' is a required field"
+      )
+
+      post_data = {
+        title: 'title',
+      }
+      res = await request(api)
+        .post('/notes/add/public')
+        .send(post_data)
+      expect(res.status).to.eq(400)
+      expect(res.body).to.have.property("error")
+      expect(res.body.error).to.have.property("validation")
+      expect(res.body.error.validation).to.include(
+        "'text' is a required field"
+      )
+
+      post_data = {}
+      res = await request(api)
+        .post('/notes/add/public')
+        .send(post_data)
+      expect(res.status).to.eq(400)
+      expect(res.body).to.have.property("error")
+      expect(res.body.error).to.have.property("validation")
+      expect(res.body.error.validation).to.include(
+        "'text' is a required field",
+        "'title' is a required field"
+      )
     })
 
     after(async () => {
