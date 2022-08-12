@@ -18,7 +18,7 @@ MERN app with multiple user authentication
     - Checkbox list ❌
     - Images ❌
   - ~implement basic search api ✔~
-- implement unit tests for backend ✔️
+  - implement unit tests for backend ✔️
 - frontend ❌
   - build basic frontend in React.JS (Mobile and Desktop) ❌
   - implement basic search using MongoDB Atlas Search ❌
