@@ -6,7 +6,7 @@ let Note = require('../models/note.models.js')
 let chai = require('chai')
 let request = require('supertest')
 let api = require('../api.js')
-const { after, before, describe, it } = require('mocha')
+const { after, before, describe, it, beforeEach, afterEach } = require('mocha')
 
 const expect = chai.expect
 
@@ -335,6 +335,147 @@ describe('Notes', () => {
         "'text' is a required field",
         "'title' is a required field"
       )
+    })
+
+    after(async () => {
+      await Note.deleteMany({})
+    })
+  })
+
+  describe('Edit a note', () => {
+    beforeEach(async () => {
+      let user = await User.findOne({ username: 'user1' })
+      await Note.create([
+        { title: 'u1n1', text: 'u1n1', owner: user.id },
+        { title: 'u1n2', text: 'u1n2', owner: user.id },
+      ])
+      user = await User.findOne({ username: 'user2' })
+      await Note.create([
+        { title: 'u2n1', text: 'u2n1', owner: user.id },
+        { title: 'u2n2', text: 'u2n2', owner: user.id },
+      ])
+      await Note.create([
+        { title: 'uxn1', text: 'uxn1', owner: null },
+        { title: 'uxn2', text: 'uxn2', owner: null },
+      ])
+    })
+
+    it('allows alogged out user to edit a public note', async () => {
+      let note = await Note.findOne({ title: 'uxn1' })
+      let id = note.id
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      note = await Note.findById(id)
+      expect(note.title).to.eq('title')
+      expect(note.text).to.eq('text')
+    })
+
+    it('allows logged in user to edit a public note', async () => {
+      let note = await Note.findOne({ title: 'uxn1' })
+      let id = note.id
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let token = await login(mockUsersData[1])
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .set('Authorization', token)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      note = await Note.findById(id)
+      expect(note.title).to.eq('title')
+      expect(note.text).to.eq('text')
+    })
+
+    it('does not allow a logged out user to edit a private note', async () => {
+      let note = await Note.findOne({ title: 'u1n1' })
+      let id = note.id
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .send(post_data)
+      expect(res.status).to.eq(401)
+      expect(res.body).to.have.property("error")
+      expect(res.body.error).to.have.property("authentication")
+      expect(res.body.error.authentication).to.include(
+        'User does not have permission to access this note'
+      )
+    })
+
+    it('allows a logged in user to edit a private note they do own', async () => {
+      let note = await Note.findOne({ title: 'u2n1' })
+      let id = note.id
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let token = await login(mockUsersData[1])
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .set('Authorization', token)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      note = await Note.findById(id)
+      expect(note.title).to.eq('title')
+      expect(note.text).to.eq('text')
+    })
+
+    it('does not allow a logged in user to edit a private note they do not own', async () => {
+      let note = await Note.findOne({ title: 'u1n1' })
+      let id = note.id
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let token = await login(mockUsersData[1])
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .set('Authorization', token)
+        .send(post_data)
+      expect(res.status).to.eq(401)
+      expect(res.body).to.have.property("error")
+      expect(res.body.error).to.have.property("authentication")
+      expect(res.body.error.authentication).to.include(
+        'User does not have permission to access this note'
+      )
+    })
+
+    it('allows a logged in admin user to edit a private note they do not own', async () => {
+      let note = await Note.findOne({ title: 'u2n1' })
+      let id = note.id
+      let post_data = {
+        title: 'title',
+        text: 'text',
+      }
+
+      let token = await login(mockUsersData[0])
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .set('Authorization', token)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      note = await Note.findById(id)
+      expect(note.title).to.eq('title')
+      expect(note.text).to.eq('text')
+    })
+
+    afterEach(async () => {
+      await Note.deleteMany({})
     })
 
     after(async () => {
