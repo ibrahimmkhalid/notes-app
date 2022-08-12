@@ -360,7 +360,6 @@ describe('Notes', () => {
       ])
     })
 
-    it('allows a logged out user to edit a public note with partial data', async () => {
     it('allows a user to edit a public note with partial data', async () => {
       let note = await Note.findOne({ title: 'uxn1' })
       let id = note.id
