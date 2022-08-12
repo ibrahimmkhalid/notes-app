@@ -8,16 +8,13 @@ MERN app with multiple user authentication
 
 ## Goals
 
-- backend ❌
-  - build basic user authentication with NodeJS, express, and MongoDB ✔
-    - make basic notes locked behind certain users ✔
-    - admin user can see all notes ✔
-  - build basic notes CRUD apis with NodeJS, express, and MongoDB ❌
-    - Unformatted text notes ✔
-    - Formatted text notes ❌
-    - Checkbox list ❌
-    - Images ❌
-  - ~implement basic search api ✔~
+- backend ✔️
+  - build basic user authentication with NodeJS, express, and MongoDB ✔️
+    - make basic notes locked behind certain users ✔️
+    - admin user can see all notes ✔️
+  - build basic notes CRUD apis with NodeJS, express, and MongoDB ✔️
+    - Unformatted text notes ✔️
+  - ~implement basic search api ✔️~
   - implement unit tests for backend ✔️
 - frontend ❌
   - build basic frontend in React.JS (Mobile and Desktop) ❌
@@ -26,6 +23,10 @@ MERN app with multiple user authentication
 
 ## Stretch goals
 
+- New types of notes ❌
+  - Formatted text notes ❌
+  - Checkbox list ❌
+  - Images ❌
 - Dockerize application ❌
 - Deploy online ❌
 - Implement CI/CD ❌
