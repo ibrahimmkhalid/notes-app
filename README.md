@@ -3,8 +3,8 @@
 MERN app with multiple user authentication
 
 ## Requirements
-- mocha installed globally
-- mongodb installed locally for unit testing
+- mocha installed globally on local machine (for running unit tests only)
+- mongodb installed on local machine (for running unit tests only)
 
 ## Goals
 
