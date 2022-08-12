@@ -360,7 +360,37 @@ describe('Notes', () => {
       ])
     })
 
-    it('allows alogged out user to edit a public note', async () => {
+    it('allows a logged out user to edit a public note with partial data', async () => {
+      let note = await Note.findOne({ title: 'uxn1' })
+      let id = note.id
+      let post_data = {
+        text: 'text',
+      }
+
+      let res = await request(api)
+        .post(`/notes/update/${id}`)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      note = await Note.findById(id)
+      expect(note.title).to.eq('uxn1')
+      expect(note.text).to.eq('text')
+
+      note = await Note.findOne({ title: 'uxn2' })
+      id = note.id
+      post_data = {
+        title: 'title',
+      }
+
+      res = await request(api)
+        .post(`/notes/update/${id}`)
+        .send(post_data)
+      expect(res.status).to.eq(200)
+      note = await Note.findById(id)
+      expect(note.title).to.eq('title')
+      expect(note.text).to.eq('uxn2')
+    })
+
+    it('allows a logged out user to edit a public note', async () => {
       let note = await Note.findOne({ title: 'uxn1' })
       let id = note.id
       let post_data = {
