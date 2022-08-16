@@ -1,7 +1,15 @@
+import NotesList from './components/NotesList'
+import TopBar from './TopBar'
+
 function App() {
   return (
-    <div className='App'>
-      this is main content
+    <div className='main-app'>
+      <div className='top'>
+        <TopBar />
+      </div>
+      <div className='main-area'>
+        <NotesList />
+      </div>
     </div>
   )
 }
