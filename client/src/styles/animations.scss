@@ -1,0 +1,27 @@
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    height: 0px;
+  }
+  50% {
+    height: 1.5rem;
+  }
+  100% {
+    opacity: 1;
+    height: 1rem;
+  }
+}
+
+@keyframes spinGrow {
+  0% {
+    font-size: 1rem;
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    font-size: 2rem;
+    transform: rotate(360deg);
+  }
+}
