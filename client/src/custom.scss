@@ -1,13 +1,17 @@
-
-$theme-colors: (
-  "light":      #F1F3F4,
-);
-
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
+:root {
+  font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 
 .top-bar{
+  padding: 1rem;
+  font-weight: bold;
   margin: 1rem;
+  background-color: #F1F3F4;
   border-radius: 10px;
+}
+
+.top-bar h1{
+  font-size: 1.2rem;
 }
 
 .main-area{
