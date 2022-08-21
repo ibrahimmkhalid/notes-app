@@ -7,7 +7,9 @@ const Note = ({ data }) => {
       <div>
         <div className='note-header'>
           <span className='note-title'>{data.title}</span>
-          <span className='note-owner'>{!data.owner ? 'public' : data.owner}</span>
+          <span className='note-owner'>
+            {!data.owner ? 'public' : data.owner}
+          </span>
         </div>
         <span>{data.text}</span>
       </div>
