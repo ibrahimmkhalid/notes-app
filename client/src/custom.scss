@@ -49,6 +49,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .note:hover{
@@ -62,7 +63,7 @@
 .note:hover .note-header {
   display: flex;
   justify-content: space-between;
-  animation: fadeIn 0.1s;
+  animation: fadeIn 200ms;
 }
 .note-footer{
   display: none;
@@ -71,7 +72,7 @@
 .note:hover .note-footer {
   display: flex;
   justify-content: space-between;
-  animation: fadeIn 0.1s;
+  animation: fadeIn 200ms;
 }
 
 @keyframes fadeIn {
@@ -79,3 +80,21 @@
   50% { height: 1.5rem; }
   100% { opacity: 1; height: 1rem; }
 }
+
+.note-add {
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.note:hover .note-add-button {
+  animation: spinGrow 200ms;
+  font-size: 2rem;
+}
+
+@keyframes spinGrow {
+  0% {font-size: 1rem; transform: rotate(0deg); }
+  50% {transform: rotate(180deg); }
+  100% {font-size: 2rem; transform: rotate(360deg); }
+}
+
