@@ -1,13 +1,18 @@
+import { useEffect, useState } from 'react'
 import Note from './Note'
+const NotesList = ({ notes }) => {
+  const [openNewNote, setOpenNewNote] = useState(false)
+  useEffect(() => {
+    console.log(notes)
+  }, [notes])
 
-const NotesList = () => {
+
   return (
     <div className='notes-list'>
-      <Note />
-      <Note />
-      <Note />
-      <Note />
-      <Note />
+      {notes.map((note) => (
+        <Note key={note.id} data={note} />
+      ))}
+
     </div>
   )
 }
