@@ -11,7 +11,7 @@ const NotesList = ({ notes }) => {
 
       <div className='note note-add'>
         <div className='note-add-button'>
-          <FontAwesomeIcon icon={faAdd} className='note-add-button-icon' />
+          <FontAwesomeIcon icon={faAdd} />
         </div>
       </div>
     </div>
