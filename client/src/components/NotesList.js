@@ -5,7 +5,7 @@ import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 
 const NotesList = ({ notes }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <div className='notes-list'>
@@ -13,12 +13,12 @@ const NotesList = ({ notes }) => {
         <Note key={note.id} data={note} />
       ))}
 
-      <div className='note note-add' onClick={() => setIsOpen(true)}>
+      <div className='note note-add' onClick={() => setIsModalOpen(true)}>
         <div className='note-add-button'>
           <FontAwesomeIcon icon={faAdd} />
         </div>
       </div>
-      <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
       </Modal>
     </div>
   )
