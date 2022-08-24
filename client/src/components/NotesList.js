@@ -1,4 +1,5 @@
 import Note from './Note'
+import NewNote from './NewNote'
 import Modal from './Modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
@@ -30,6 +31,7 @@ const NotesList = () => {
         </div>
       </div>
       <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <NewNote />
       </Modal>
     </div>
   )
