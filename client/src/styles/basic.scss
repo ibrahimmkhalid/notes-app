@@ -1,5 +1,7 @@
+$notes-app-font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+
 :root {
-  font-family: 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: $notes-app-font-family;
 }
 
 .main-area {
