@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import { endpointUrl } from '../helpers/urlHelpers'
 
 const NotesList = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isNewNoteModalOpen, setIsNewNoteModalOpen] = useState(false)
 
   const [notes, setNotes] = useState([])
 
@@ -25,12 +25,18 @@ const NotesList = () => {
         <Note key={note.id} data={note} />
       ))}
 
-      <div className='note note-add' onClick={() => setIsModalOpen(true)}>
+      <div
+        className='note note-add'
+        onClick={() => setIsNewNoteModalOpen(true)}
+      >
         <div className='note-add-button'>
           <FontAwesomeIcon icon={faAdd} />
         </div>
       </div>
-      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal
+        open={isNewNoteModalOpen}
+        onClose={() => setIsNewNoteModalOpen(false)}
+      >
         <NewNote />
       </Modal>
     </div>
