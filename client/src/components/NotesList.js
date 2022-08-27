@@ -24,7 +24,6 @@ const NotesList = () => {
   const [notes, setNotes] = useState([])
 
   useEffect(() => {
-    console.log(111)
     fetch(endpointUrl('notes/all')).then((response) => {
       response.json().then((data) => {
         setNotes(data.data.notes)
