@@ -1,4 +1,5 @@
 import Note from './Note'
+import EditNote from './EditNote'
 import NewNote from './NewNote'
 import Modal from './Modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,6 +9,18 @@ import { endpointUrl } from '../helpers/urlHelpers'
 
 const NotesList = () => {
   const [isNewNoteModalOpen, setIsNewNoteModalOpen] = useState(false)
+
+  const [isNoteModalOpen, setIsNoteModalOpen] = useState(null)
+  console.log(isNoteModalOpen)
+  const handleIsNoteModalOpen = (id) => {
+    if (isNoteModalOpen === null) {
+      return null
+    }
+    if (isNoteModalOpen === id) {
+      return 1
+    }
+    return null
+  }
 
   const [notes, setNotes] = useState([])
 
@@ -22,7 +35,17 @@ const NotesList = () => {
   return (
     <div className='notes-list'>
       {notes.map((note) => (
-        <Note key={note.id} data={note} />
+        <>
+          <div onClick={() => setIsNoteModalOpen(note.id)}>
+            <Note key={note.id} data={note} />
+          </div>
+          <Modal
+            open={handleIsNoteModalOpen(note.id)}
+            onClose={() => setIsNoteModalOpen(null)}
+          >
+            <EditNote data={note} />
+          </Modal>
+        </>
       ))}
 
       <div
