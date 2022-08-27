@@ -3,9 +3,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { endpointUrl } from '../helpers/urlHelpers'
 
 const Note = ({ data }) => {
-
   const deleteNote = (event) => {
-    console.log(event)
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },

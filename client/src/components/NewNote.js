@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { endpointUrl } from '../helpers/urlHelpers'
 
-const NewNote = () => {
+const NewNote = ({ props }) => {
   const [newNote, setNewNote] = useState({
     title: null,
     text: null,
@@ -17,7 +17,6 @@ const NewNote = () => {
   }
 
   const saveNote = () => {
-    console.log(newNote)
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -48,7 +47,13 @@ const NewNote = () => {
           {newNote.text}
         </textarea>
         <br></br>
-        <div className='new-note-save-button' onClick={saveNote}>
+        <div
+          className='new-note-save-button'
+          onClick={() => {
+            saveNote()
+            props.closeModal()
+          }}
+        >
           <FontAwesomeIcon icon={faSave} />
         </div>
       </div>

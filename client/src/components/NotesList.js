@@ -11,7 +11,6 @@ const NotesList = () => {
   const [isNewNoteModalOpen, setIsNewNoteModalOpen] = useState(false)
 
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(null)
-  console.log(isNoteModalOpen)
   const handleIsNoteModalOpen = (id) => {
     if (isNoteModalOpen === null) {
       return null
@@ -25,12 +24,13 @@ const NotesList = () => {
   const [notes, setNotes] = useState([])
 
   useEffect(() => {
+    console.log(111)
     fetch(endpointUrl('notes/all')).then((response) => {
       response.json().then((data) => {
         setNotes(data.data.notes)
       })
     })
-  }, [])
+  }, [isNoteModalOpen, isNewNoteModalOpen])
 
   return (
     <div className='notes-list'>
@@ -43,7 +43,10 @@ const NotesList = () => {
             open={handleIsNoteModalOpen(note.id)}
             onClose={() => setIsNoteModalOpen(null)}
           >
-            <EditNote data={note} />
+            <EditNote
+              data={note}
+              props={{ closeModal: () => setIsNoteModalOpen(null) }}
+            />
           </Modal>
         </>
       ))}
@@ -60,7 +63,7 @@ const NotesList = () => {
         open={isNewNoteModalOpen}
         onClose={() => setIsNewNoteModalOpen(false)}
       >
-        <NewNote />
+        <NewNote props={{ closeModal: () => setIsNewNoteModalOpen(false) }} />
       </Modal>
     </div>
   )
