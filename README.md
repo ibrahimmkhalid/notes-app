@@ -23,10 +23,10 @@ MERN app with multiple user authentication
 
 ## Stretch goals
 
+- Dockerize application ❌
+- Deploy online ❌
+- Implement CI/CD ❌
 - New types of notes ❌
   - Formatted text notes ❌
   - Checkbox list ❌
   - Images ❌
-- Dockerize application ❌
-- Deploy online ❌
-- Implement CI/CD ❌
