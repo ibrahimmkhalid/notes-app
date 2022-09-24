@@ -23,12 +23,16 @@ const NotesList = () => {
 
   const [notes, setNotes] = useState([])
 
-  useEffect(() => {
+  const reloadNotesList = () => {
     fetch(endpointUrl('notes/all')).then((response) => {
       response.json().then((data) => {
         setNotes(data.data.notes)
       })
     })
+  }
+
+  useEffect(() => {
+    reloadNotesList()
   }, [isNoteModalOpen, isNewNoteModalOpen])
 
   return (
@@ -36,7 +40,16 @@ const NotesList = () => {
       {notes.map((note) => (
         <>
           <div onClick={() => setIsNoteModalOpen(note.id)}>
-            <Note key={note.id} data={note} />
+            <Note
+              key={note.id}
+              data={note}
+              props={{
+                reloadNotesList: () => {
+                  reloadNotesList()
+                  setIsNoteModalOpen(null)
+                },
+              }}
+            />
           </div>
           <Modal
             open={handleIsNoteModalOpen(note.id)}

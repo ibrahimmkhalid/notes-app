@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { endpointUrl } from '../helpers/urlHelpers'
 
-const Note = ({ data }) => {
+const Note = ({ data, props }) => {
   const deleteNote = (event) => {
     const requestOptions = {
       method: 'DELETE',
@@ -12,6 +12,7 @@ const Note = ({ data }) => {
     fetch(endpointUrl(urlPart), requestOptions)
       .then((response) => response.json())
       .then((data) => console.log(data))
+    props.reloadNotesList()
   }
 
   return (
