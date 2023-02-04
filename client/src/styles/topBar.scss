@@ -1,9 +1,29 @@
+$base-color: #f1f3f4;
+$button-color: #d1d3d4;
+
 .top-bar {
   padding: 1rem;
   font-weight: bold;
   margin: 1rem;
-  background-color: #f1f3f4;
+  background-color: $base-color;
   border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar button {
+  border-radius: 10px;
+  height: 2.3em;
+  border-style: none;
+  background-color: $button-color;
+  cursor: pointer;
+}
+
+.top-bar button:hover {
+  background-color: $base-color;
+  border: 1px solid $button-color;
 }
 
 .top-bar h1 {
