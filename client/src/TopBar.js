@@ -1,18 +1,35 @@
 import { useState } from 'react'
 import Modal from './components/Modal'
 import UserPortal from './components/UserPortal'
+import { isLoggedIn } from './helpers/authHelpers'
 
 function TopBar() {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false)
+
+  let userButton
+  if (isLoggedIn()) {
+    userButton = (
+      <button
+        onClick={() => {
+          localStorage.removeItem('user_token')
+          window.location.reload()
+        }}
+      >
+        Logout
+      </button>
+    )
+  } else {
+    userButton = (
+      <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
+    )
+  }
 
   return (
     <div className='top-bar'>
       <span>
         <h1>Notes App by @ibrahimmkhalid</h1>
       </span>
-      <span>
-        <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
-      </span>
+      <span>{userButton}</span>
       <Modal open={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}>
         <UserPortal></UserPortal>
       </Modal>

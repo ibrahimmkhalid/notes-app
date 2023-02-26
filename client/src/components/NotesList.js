@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { endpointUrl } from '../helpers/urlHelpers'
+import { getAuthKey, isLoggedIn } from '../helpers/authHelpers'
 
 const NotesList = () => {
   const [isNewNoteModalOpen, setIsNewNoteModalOpen] = useState(false)
@@ -24,7 +25,15 @@ const NotesList = () => {
   const [notes, setNotes] = useState([])
 
   const reloadNotesList = () => {
-    fetch(endpointUrl('notes/all')).then((response) => {
+    let requestOptions = {}
+    if (isLoggedIn()) {
+      requestOptions = {
+        headers: {
+          'Authorization': `Bearer ${getAuthKey()}`
+        }
+      }
+    }
+    fetch(endpointUrl('notes/all'), requestOptions).then((response) => {
       response.json().then((data) => {
         setNotes(data.data.notes)
       })

@@ -21,7 +21,10 @@ const UserPortal = () => {
     }
     fetch(endpointUrl("login"), requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((res) => {
+        localStorage.setItem('user_token', res.data.token)
+        window.location.reload()
+      })
   }
 
   return (
