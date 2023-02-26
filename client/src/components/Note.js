@@ -1,10 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { endpointUrl } from '../helpers/urlHelpers'
+import { getAuthKey, isLoggedIn } from '../helpers/authHelpers'
 
 const Note = ({ data, props }) => {
   const deleteNote = (event) => {
-    const requestOptions = {
+    let requestOptions = {}
+    if (isLoggedIn()) {
+      requestOptions = {
+        headers: {
+          'Authorization': `Bearer ${getAuthKey()}`
+        }
+      }
+    }
+    requestOptions = {
+      ...requestOptions,
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     }
