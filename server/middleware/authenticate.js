@@ -63,10 +63,15 @@ module.exports = {
       admin: user.admin
     };
 
-    return await jwt.sign(
+    let token = jwt.sign(
       payload,
       process.env.JWT_SECRET,
       {expiresIn: 864000}
     )
+    return {
+      username: payload.username,
+      admin: payload.admin,
+      token: token
+    }
   }
 }

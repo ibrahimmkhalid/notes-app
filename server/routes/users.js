@@ -12,16 +12,16 @@ router.route('/register').post((req, res) => {
         code: 500
       };
     }
-    const token = await service.loginUser(data);
-    return {token};
+    const returnData = await service.loginUser(data);
+    return returnData;
   });
 });
 
 router.route('/login').post((req, res) => {
   const data = req.body;
   responseHelper(res, async () => {
-    const token = await service.loginUser(data);
-    return {token};
+    const returnData = await service.loginUser(data);
+    return returnData;
   });
 });
 
