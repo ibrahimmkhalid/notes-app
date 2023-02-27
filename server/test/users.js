@@ -34,6 +34,8 @@ describe('Users', () => {
         .end((err, res) => {
           expect(res.status).to.eq(200);
           expect(res.body.data).to.have.property('token');
+          expect(res.body.data).to.have.property('username');
+          expect(res.body.data).to.have.property('admin');
           done();
         });
     });
@@ -83,6 +85,8 @@ describe('Users', () => {
         .end((err, res) => {
           expect(res.status).to.eq(200);
           expect(res.body.data).to.have.property('token');
+          expect(res.body.data).to.have.property('username');
+          expect(res.body.data).to.have.property('admin');
 
           request(api)
             .post('/register')
@@ -90,6 +94,8 @@ describe('Users', () => {
             .end((err, res) => {
               expect(res.status).to.eq(200);
               expect(res.body.data).to.have.property('token');
+              expect(res.body.data).to.have.property('username');
+              expect(res.body.data).to.have.property('admin');
               done();
             });
         });
@@ -102,6 +108,8 @@ describe('Users', () => {
         .end((err, res) => {
           expect(res.status).to.eq(200);
           expect(res.body.data).to.have.property('token');
+          expect(res.body.data).to.have.property('username');
+          expect(res.body.data).to.have.property('admin');
 
           request(api)
             .post('/register')
@@ -126,6 +134,8 @@ describe('Users', () => {
         .end((err, res) => {
           expect(res.status).to.eq(200);
           expect(res.body.data).to.have.property('token');
+          expect(res.body.data).to.have.property('username');
+          expect(res.body.data).to.have.property('admin');
 
           request(api)
             .post('/login')
@@ -133,6 +143,8 @@ describe('Users', () => {
             .end((err, res) => {
               expect(res.status).to.eq(200);
               expect(res.body.data).to.have.property('token');
+              expect(res.body.data).to.have.property('username');
+              expect(res.body.data).to.have.property('admin');
               done();
             });
         });
@@ -145,6 +157,8 @@ describe('Users', () => {
         .end((err, res) => {
           expect(res.status).to.eq(200);
           expect(res.body.data).to.have.property('token');
+          expect(res.body.data).to.have.property('username');
+          expect(res.body.data).to.have.property('admin');
 
           //different password
           let _data = {
