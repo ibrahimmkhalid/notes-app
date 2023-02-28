@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Modal from './components/Modal'
 import UserPortal from './components/UserPortal'
-import { isLoggedIn } from './helpers/authHelpers'
+import { getAdmin, getUserName, isLoggedIn } from './helpers/authHelpers'
 
 function TopBar() {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false)
@@ -15,7 +15,7 @@ function TopBar() {
           window.location.reload()
         }}
       >
-        Logout
+        {getUserName() + (getAdmin() ? ' (admin)' : '')}
       </button>
     )
   } else {

@@ -1,5 +1,5 @@
 export const isLoggedIn = () => {
-  let key = localStorage.getItem('user_token')
+  let key = localStorage.getItem('user_data')
   if (key) {
     return true
   }
@@ -7,5 +7,16 @@ export const isLoggedIn = () => {
 }
 
 export const getAuthKey = () => {
-  return localStorage.getItem('user_token')
+  let user_data = JSON.parse(localStorage.getItem('user_data'))
+  return user_data.token
+}
+
+export const getUserName = () => {
+  let user_data = JSON.parse(localStorage.getItem('user_data'))
+  return user_data.username
+}
+
+export const getAdmin = () => {
+  let user_data = JSON.parse(localStorage.getItem('user_data'))
+  return user_data.admin
 }
