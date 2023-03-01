@@ -11,7 +11,7 @@ function TopBar() {
     userButton = (
       <button
         onClick={() => {
-          localStorage.removeItem('user_token')
+          localStorage.removeItem('user_data')
           window.location.reload()
         }}
       >
