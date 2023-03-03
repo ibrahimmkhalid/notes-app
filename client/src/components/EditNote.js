@@ -1,7 +1,6 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { getAuthKey, isLoggedIn } from '../helpers/authHelpers'
 import { endpointUrl } from '../helpers/urlHelpers'
 
 const EditNote = ({ data, props }) => {
@@ -20,13 +19,13 @@ const EditNote = ({ data, props }) => {
   const saveNote = () => {
 
     let requestOptions = {}
-    if (isLoggedIn()) {
-      requestOptions = {
-        headers: {
-          'Authorization': `Bearer ${getAuthKey()}`
-        }
-      }
-    }
+    /* if (isLoggedIn()) { */
+    /*   requestOptions = { */
+    /*     headers: { */
+    /*       'Authorization': `Bearer ${getAuthKey()}` */
+    /*     } */
+    /*   } */
+    /* } */
     requestOptions = {
       ...requestOptions,
       method: 'POST',

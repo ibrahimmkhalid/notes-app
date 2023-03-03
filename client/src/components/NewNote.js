@@ -1,7 +1,6 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { getAuthKey, isLoggedIn } from '../helpers/authHelpers'
 import { endpointUrl } from '../helpers/urlHelpers'
 
 const NewNote = ({ props }) => {
@@ -23,20 +22,20 @@ const NewNote = ({ props }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newNote),
     }
-    if (isLoggedIn()) {
-      requestOptions.headers = {
-        ...requestOptions.headers,
-        'Authorization': `Bearer ${getAuthKey()}`
-      } 
-      console.log(requestOptions)
-      fetch(endpointUrl('notes/add/private'), requestOptions)
-        .then((response) => response.json())
-        .then((data) => console.log(data))
-    } else {
+    /* if (isLoggedIn()) { */
+    /*   requestOptions.headers = { */
+    /*     ...requestOptions.headers, */
+    /*     'Authorization': `Bearer ${getAuthKey()}` */
+    /*   }  */
+    /*   console.log(requestOptions) */
+    /*   fetch(endpointUrl('notes/add/private'), requestOptions) */
+    /*     .then((response) => response.json()) */
+    /*     .then((data) => console.log(data)) */
+    /* } else { */
       fetch(endpointUrl('notes/add/public'), requestOptions)
         .then((response) => response.json())
         .then((data) => console.log(data))
-    }
+    /* } */
   }
 
   return (

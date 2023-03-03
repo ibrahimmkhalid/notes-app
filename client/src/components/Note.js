@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { endpointUrl } from '../helpers/urlHelpers'
-import { getAuthKey, isLoggedIn } from '../helpers/authHelpers'
 
 const Note = ({ data, props }) => {
   const deleteNote = (event) => {
@@ -10,15 +9,15 @@ const Note = ({ data, props }) => {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     }
-    if (isLoggedIn()) {
-      requestOptions = {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getAuthKey()}`
-        }
-      }
-    }
+    /* if (isLoggedIn()) { */
+    /*   requestOptions = { */
+    /*     method: 'DELETE', */
+    /*     headers: { */
+    /*       'Content-Type': 'application/json', */
+    /*       'Authorization': `Bearer ${getAuthKey()}` */
+    /*     } */
+    /*   } */
+    /* } */
     let urlPart = `notes/${data.id}`
     fetch(endpointUrl(urlPart), requestOptions)
       .then((response) => response.json())
