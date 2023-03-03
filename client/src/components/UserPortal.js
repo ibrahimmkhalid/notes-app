@@ -22,8 +22,17 @@ const UserPortal = () => {
     fetch(endpointUrl("login"), requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        localStorage.setItem('user_data', JSON.stringify(res.data))
-        window.location.reload()
+        if (res.status === 'fail') {
+          fetch(endpointUrl("register"), requestOptions)
+            .then((response) => response.json())
+            .then((res) => {
+              localStorage.setItem('user_data', JSON.stringify(res.data))
+              window.location.reload()
+          })
+        } else {
+          localStorage.setItem('user_data', JSON.stringify(res.data))
+          window.location.reload()
+        }
       })
   }
 
