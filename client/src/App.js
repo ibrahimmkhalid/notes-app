@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import NotesList from './components/NotesList'
-import TopBar from './TopBar'
+import TopBar from './components/TopBar'
 
 function App() {
   const [userKey, setUserKey] = useState(null)
