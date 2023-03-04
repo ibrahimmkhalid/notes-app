@@ -1,16 +1,7 @@
-import { useEffect, useState } from 'react'
 import NotesList from './components/NotesList'
 import TopBar from './components/TopBar'
 
 function App() {
-  const [userKey, setUserKey] = useState(null)
-
-  useEffect(() => {
-    const storedUserKey = localStorage.getItem('user_token')
-    if (storedUserKey) {
-      setUserKey(storedUserKey)
-    }
-  }, [])
   return (
     <div className='main-app'>
       <div className='top'>
