@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Modal from './components/Modal'
-import UserPortal from './components/UserPortal'
-import { getAdmin, getUserName, isLoggedIn } from './helpers/authHelpers'
+import Modal from './Modal'
+import UserPortal from './UserPortal'
+import { getAdmin, getUserName, isLoggedIn } from '../helpers/authHelpers'
 
 function TopBar() {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false)
