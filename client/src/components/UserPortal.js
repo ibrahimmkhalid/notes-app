@@ -1,14 +1,17 @@
+import { useContext } from "react"
 import { useState } from "react"
 import { endpointUrl } from '../helpers/urlHelpers'
+import UserStore from "../stores/userStore"
 
-const UserPortal = () => {
+const UserPortal = ({ props }) => {
+  const userStore = useContext(UserStore)
   const [userData, setUserData] = useState({
-    username: '',
-    password: ''
+    username: 'ibrahim',
+    password: 'ibrahim'
   })
 
   const handleChange = (event) => {
-    setUserData({...userData, [event.target.name]: event.target.value})
+    setUserData({ ...userData, [event.target.name]: event.target.value })
   }
 
   const handleSubmit = (event) => {
@@ -21,9 +24,42 @@ const UserPortal = () => {
     }
     fetch(endpointUrl("login"), requestOptions)
       .then((response) => response.json())
-      .then((res) => {
-        //login, if fail, register
+      .then((data) => {
+        if (data.status === "success") {
+          // Login successful, do something here like redirect to the user's dashboard
+          console.log(data)
+          userStore.loadUser(data.data)
+          props.setIsUserModalOpen(false)
+          setUserData({
+            username: "",
+            password: "",
+          });
+
+        } else {
+          // Login failed, try to register the user instead
+          const registerOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData),
+          }
+          fetch(endpointUrl("register"), registerOptions)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                // Registration successful, do something here like redirect to the user's dashboard
+              } else {
+                // Registration failed, show error message to the user
+                alert("Registration failed: " + data.error.message);
+              }
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+        }
       })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 
   return (
