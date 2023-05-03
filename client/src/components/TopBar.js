@@ -13,7 +13,7 @@ function TopBar() {
   if (userStore.isLoggedIn()) {
     //user is logged in, change user button
     userButton = (
-      <button onClick={() => setIsUserModalOpen(true)}>{userStore.username}</button>
+      <button onClick={() => userStore.logout()}>{userStore.username}</button>
     )
   }
 
