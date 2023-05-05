@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import { createContext } from "react";
 
 class UserStore {
@@ -7,21 +7,28 @@ class UserStore {
   token = ""
 
   constructor() {
-    makeAutoObservable(this)
+    makeObservable(this, {
+      username: observable,
+      isAdmin: observable,
+      token: observable,
+      loadUser: action,
+      logout: action,
+      isLoggedIn: computed
+    })
   }
-  loadUser = (data) => {
+  loadUser(data) {
     this.username = data.username
     this.isAdmin = data.admin
     this.token = data.token
   }
 
-  logout = () => {
+  logout() {
     this.username = ""
     this.isAdmin = false
     this.token = ""
   }
 
-  isLoggedIn = () => {
+  get isLoggedIn() {
     return this.token !== ""
   }
 

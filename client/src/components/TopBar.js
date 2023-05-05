@@ -7,13 +7,15 @@ function TopBar() {
   const userStore = useContext(UserStore)
   const [isUserModalOpen, setIsUserModalOpen] = useState(false)
 
-  let userButton = (
-      <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
-    ) 
-  if (userStore.isLoggedIn()) {
-    //user is logged in, change user button
+  let userButton
+
+  if (userStore.isLoggedIn) {
     userButton = (
       <button onClick={() => userStore.logout()}>{userStore.username}</button>
+    )
+  } else {
+    userButton = (
+      <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
     )
   }
 
@@ -24,7 +26,7 @@ function TopBar() {
       </span>
       <span>{userButton}</span>
       <Modal open={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}>
-        <UserPortal props={{setIsUserModalOpen: setIsUserModalOpen}}></UserPortal>
+        <UserPortal props={{ setIsUserModalOpen: setIsUserModalOpen }}></UserPortal>
       </Modal>
     </div>
   )
