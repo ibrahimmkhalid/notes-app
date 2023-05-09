@@ -1,9 +1,12 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { observer } from 'mobx-react'
+import { useContext, useState } from 'react'
 import { endpointUrl } from '../helpers/urlHelpers'
+import UserStore from '../stores/userStore'
 
 const NewNote = ({ props }) => {
+  const userStore = useContext(UserStore)
   const [newNote, setNewNote] = useState({
     title: null,
     text: null,
@@ -22,20 +25,20 @@ const NewNote = ({ props }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newNote),
     }
-    /* if (isLoggedIn()) { */
-    /*   requestOptions.headers = { */
-    /*     ...requestOptions.headers, */
-    /*     'Authorization': `Bearer ${getAuthKey()}` */
-    /*   }  */
-    /*   console.log(requestOptions) */
-    /*   fetch(endpointUrl('notes/add/private'), requestOptions) */
-    /*     .then((response) => response.json()) */
-    /*     .then((data) => console.log(data)) */
-    /* } else { */
+    if (userStore.isLoggedIn) {
+      requestOptions.headers = {
+        ...requestOptions.headers,
+        'Authorization': `Bearer ${userStore.token}`
+      } 
+      console.log(requestOptions)
+      fetch(endpointUrl('notes/add/private'), requestOptions)
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+    } else {
       fetch(endpointUrl('notes/add/public'), requestOptions)
         .then((response) => response.json())
         .then((data) => console.log(data))
-    /* } */
+    }
   }
 
   return (
@@ -72,4 +75,4 @@ const NewNote = ({ props }) => {
   )
 }
 
-export default NewNote
+export default observer(NewNote)

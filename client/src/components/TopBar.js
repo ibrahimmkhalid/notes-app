@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react'
 import { useContext, useState } from 'react'
 import UserStore from '../stores/userStore'
 import Modal from './Modal'
@@ -32,4 +33,4 @@ function TopBar() {
   )
 }
 
-export default TopBar
+export default observer(TopBar)

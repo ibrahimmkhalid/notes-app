@@ -1,5 +1,6 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { observer } from 'mobx-react'
 import React from 'react'
 import ReactDom from 'react-dom'
 
@@ -20,4 +21,4 @@ const Modal = ({ open, children, onClose }) => {
   )
 }
 
-export default Modal
+export default observer(Modal)

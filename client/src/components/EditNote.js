@@ -1,9 +1,12 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { observer } from 'mobx-react'
+import { useContext, useState } from 'react'
 import { endpointUrl } from '../helpers/urlHelpers'
+import UserStore from '../stores/userStore'
 
 const EditNote = ({ data, props }) => {
+  const userStore = useContext(UserStore)
   const [editNote, setEditNote] = useState({
     title: null,
     text: null,
@@ -19,13 +22,13 @@ const EditNote = ({ data, props }) => {
   const saveNote = () => {
 
     let requestOptions = {}
-    /* if (isLoggedIn()) { */
-    /*   requestOptions = { */
-    /*     headers: { */
-    /*       'Authorization': `Bearer ${getAuthKey()}` */
-    /*     } */
-    /*   } */
-    /* } */
+    if (userStore.isLoggedIn) {
+      requestOptions = {
+        headers: {
+          'Authorization': `Bearer ${userStore.token}`
+        }
+      }
+    }
     requestOptions = {
       ...requestOptions,
       method: 'POST',
@@ -72,4 +75,4 @@ const EditNote = ({ data, props }) => {
   )
 }
 
-export default EditNote
+export default observer(EditNote)

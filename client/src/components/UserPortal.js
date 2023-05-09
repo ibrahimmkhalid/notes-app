@@ -1,3 +1,4 @@
+import { observer } from "mobx-react"
 import { useContext } from "react"
 import { useState } from "react"
 import { endpointUrl } from '../helpers/urlHelpers'
@@ -88,4 +89,4 @@ const UserPortal = ({ props }) => {
   )
 }
 
-export default UserPortal
+export default observer(UserPortal)
