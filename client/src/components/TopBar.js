@@ -6,17 +6,11 @@ import UserPortal from './UserPortal'
 function TopBar() {
   const userStore = useContext(UserStore)
   const [isUserModalOpen, setIsUserModalOpen] = useState(false)
+  const [reloadToggle, setReloadToggle] = useState(false)
 
-  let userButton
-
-  if (userStore.isLoggedIn) {
-    userButton = (
-      <button onClick={() => userStore.logout()}>{userStore.username}</button>
-    )
-  } else {
-    userButton = (
-      <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
-    )
+  const handleLogout = () => {
+    userStore.logout()
+    setReloadToggle(!reloadToggle)
   }
 
   return (
@@ -24,7 +18,13 @@ function TopBar() {
       <span>
         <h1>Notes App by @ibrahimmkhalid</h1>
       </span>
-      <span>{userButton}</span>
+      <span>{
+        userStore.isLoggedIn ? (
+          <button className='logout' onClick={() => handleLogout()}>{userStore.username}</button>
+        ) : (
+          <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
+        )
+      }</span>
       <Modal open={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}>
         <UserPortal props={{ setIsUserModalOpen: setIsUserModalOpen }}></UserPortal>
       </Modal>
