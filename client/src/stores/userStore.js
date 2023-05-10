@@ -7,6 +7,13 @@ class UserStore {
   token = ""
 
   constructor() {
+    let userdata = localStorage.getItem("user_login_info")
+    if (userdata) {
+      userdata = JSON.parse(userdata)
+      this.username = userdata.username
+      this.isAdmin = userdata.admin
+      this.token = userdata.token
+    }
     makeObservable(this, {
       username: observable,
       isAdmin: observable,
@@ -20,12 +27,19 @@ class UserStore {
     this.username = data.username
     this.isAdmin = data.admin
     this.token = data.token
+    let userdata = {
+      username: this.username,
+      isAdmin: this.isAdmin,
+      token: this.token
+    }
+    localStorage.setItem("user_login_info", JSON.stringify(userdata))
   }
 
   logout() {
+    this.token = ""
     this.username = ""
     this.isAdmin = false
-    this.token = ""
+    localStorage.removeItem("user_login_info")
   }
 
   get isLoggedIn() {
