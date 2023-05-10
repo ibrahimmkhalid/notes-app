@@ -4,11 +4,13 @@ import NewNote from './NewNote'
 import Modal from './Modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAdd } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { endpointUrl } from '../helpers/urlHelpers'
-import { getAuthKey, isLoggedIn } from '../helpers/authHelpers'
+import UserStore from '../stores/userStore'
+import { observer } from 'mobx-react'
 
 const NotesList = () => {
+  const userStore = useContext(UserStore)
   const [isNewNoteModalOpen, setIsNewNoteModalOpen] = useState(false)
 
   const [isNoteModalOpen, setIsNoteModalOpen] = useState(null)
@@ -26,10 +28,10 @@ const NotesList = () => {
 
   const reloadNotesList = () => {
     let requestOptions = {}
-    if (isLoggedIn()) {
+    if (userStore.isLoggedIn) {
       requestOptions = {
         headers: {
-          'Authorization': `Bearer ${getAuthKey()}`
+          'Authorization': `Bearer ${userStore.token}`
         }
       }
     }
@@ -42,7 +44,7 @@ const NotesList = () => {
 
   useEffect(() => {
     reloadNotesList()
-  }, [isNoteModalOpen, isNewNoteModalOpen])
+  }, [isNoteModalOpen, isNewNoteModalOpen, userStore.isLoggedIn])
 
   return (
     <div className='notes-list'>
@@ -90,4 +92,4 @@ const NotesList = () => {
   )
 }
 
-export default NotesList
+export default observer(NotesList)

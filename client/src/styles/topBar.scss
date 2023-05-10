@@ -1,5 +1,6 @@
 $base-color: #f1f3f4;
 $button-color: #d1d3d4;
+$logout-button-color: #FF3355;
 
 .top-bar {
   padding: 1rem;
@@ -23,6 +24,11 @@ $button-color: #d1d3d4;
 
 .top-bar button:hover {
   background-color: $base-color;
+  border: 1px solid $button-color;
+}
+
+.top-bar button.logout:hover {
+  background-color: $logout-button-color;
   border: 1px solid $button-color;
 }
 

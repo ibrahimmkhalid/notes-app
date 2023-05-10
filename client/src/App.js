@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react'
 import NotesList from './components/NotesList'
 import TopBar from './components/TopBar'
 
@@ -14,4 +15,4 @@ function App() {
   )
 }
 
-export default App
+export default observer(App)
