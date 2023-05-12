@@ -7,8 +7,8 @@ import UserStore from "../stores/userStore"
 const UserPortal = ({ props }) => {
   const userStore = useContext(UserStore)
   const [userData, setUserData] = useState({
-    username: 'ibrahim',
-    password: 'ibrahim'
+    username: '',
+    password: ''
   })
 
   const handleChange = (event) => {
@@ -28,7 +28,6 @@ const UserPortal = ({ props }) => {
       .then((data) => {
         if (data.status === "success") {
           // Login successful, do something here like redirect to the user's dashboard
-          console.log(data)
           userStore.loadUser(data.data)
           props.setIsUserModalOpen(false)
           setUserData({
@@ -48,6 +47,12 @@ const UserPortal = ({ props }) => {
             .then((data) => {
               if (data.status === "success") {
                 // Registration successful, do something here like redirect to the user's dashboard
+                userStore.loadUser(data.data)
+                props.setIsUserModalOpen(false)
+                setUserData({
+                  username: "",
+                  password: "",
+                });
               } else {
                 // Registration failed, show error message to the user
                 alert("Registration failed: " + data.error.message);
