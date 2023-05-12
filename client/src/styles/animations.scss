@@ -25,3 +25,15 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes sizeBounce {
+  0% {
+    font-size: 1rem;
+  }
+  50% {
+    font-size: 1.5rem;
+  }
+  100% {
+    font-size: 1rem;
+  }
+}

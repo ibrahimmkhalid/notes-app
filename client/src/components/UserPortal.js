@@ -1,3 +1,5 @@
+import { faSignIn } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { observer } from "mobx-react"
 import { useContext } from "react"
 import { useState } from "react"
@@ -69,8 +71,8 @@ const UserPortal = ({ props }) => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="user-portal-div">
+      <form onSubmit={handleSubmit} className="user-portal-form">
         <input
           id='username-input'
           className='login-input-field'
@@ -79,6 +81,7 @@ const UserPortal = ({ props }) => {
           value={userData.username}
           onChange={handleChange}
         ></input>
+        <br></br>
         <input
           id='password-input'
           type='password'
@@ -88,7 +91,10 @@ const UserPortal = ({ props }) => {
           value={userData.password}
           onChange={handleChange}
         ></input>
-        <button>login</button>
+        <br></br>
+        <button className="login-button">
+          <FontAwesomeIcon icon={faSignIn} />
+        </button>
       </form>
     </div>
   )

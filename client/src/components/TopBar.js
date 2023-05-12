@@ -26,7 +26,7 @@ function TopBar() {
           <button onClick={() => setIsUserModalOpen(true)}>Login/Signup</button>
         )
       }</span>
-      <Modal open={isUserModalOpen} onClose={() => setIsUserModalOpen(false)}>
+      <Modal open={isUserModalOpen} onClose={() => setIsUserModalOpen(false)} width="200px">
         <UserPortal props={{ setIsUserModalOpen: setIsUserModalOpen }}></UserPortal>
       </Modal>
     </div>
