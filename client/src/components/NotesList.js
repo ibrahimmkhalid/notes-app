@@ -35,11 +35,11 @@ const NotesList = () => {
         }
       }
     }
-    fetch(endpointUrl('notes/all'), requestOptions).then((response) => {
-      response.json().then((data) => {
-        setNotes(data.data.notes)
+    fetch(endpointUrl('notes/all'), requestOptions)
+      .then((response) => response.json())
+      .then((json) => {
+        setNotes(json.data.notes)
       })
-    })
   }
 
   useEffect(() => {
