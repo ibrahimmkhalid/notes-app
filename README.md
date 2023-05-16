@@ -14,13 +14,13 @@ MERN app with multiple user authentication
     - admin user can see all notes ✔️
   - build basic notes CRUD apis with NodeJS, express, and MongoDB ✔️
     - Unformatted text notes ✔️
-  - ~implement basic search api ✔️~ _reason: better off as a frontend feature_
+  - ~implement basic search api~ _reason: better off as a frontend feature_
   - implement unit tests for backend ✔️
 - frontend ❌
   - build basic frontend in React.JS (Mobile and Desktop) ✔️
-  - ~implement basic search using MongoDB Atlas Search ❌~ _reason: overly complicated for this level of application_
+  - ~implement basic search using MongoDB Atlas Search~ _reason: overly complicated for this level of application_
   - implement basic search using frontend filtering methods :x:
-  - ~implement unit tests for frontend ❌~ _reason: not a current focus, moved into stretch goals_
+  - ~implement unit tests for frontend~ _reason: not a current focus, moved into stretch goals_
 
 ## Stretch goals
 
