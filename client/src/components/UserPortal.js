@@ -35,21 +35,21 @@ const UserPortal = ({ props }) => {
     }
     fetch(endpointUrl("login"), requestOptions)
       .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "success") {
+      .then((json) => {
+        if (json.status === "success") {
           // Login successful, do something here like redirect to the user's dashboard
-          doLogin(data.data)
+          doLogin(json.data)
         } else {
-          if (data.error.hasOwnProperty("authentication")) {
-            if (data.error.authentication.includes("Password does not match!")) {
+          if (json.error.hasOwnProperty("authentication")) {
+            if (json.error.authentication.includes("Password does not match!")) {
               alert("Wrong password, try again")
-            } else if (data.error.authentication.includes("User does not exist!")) {
+            } else if (json.error.authentication.includes("User does not exist!")) {
               // Login failed, try to register the user instead
               fetch(endpointUrl("register"), requestOptions)
                 .then((response) => response.json())
-                .then((data) => {
-                  if (data.status === "success") {
-                    doLogin(data.data)
+                .then((json) => {
+                  if (json.status === "success") {
+                    doLogin(json.data)
                   } else {
                     alert("Something went wrong")
                   }
