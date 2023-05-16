@@ -17,6 +17,14 @@ const UserPortal = ({ props }) => {
     setUserData({ ...userData, [event.target.name]: event.target.value })
   }
 
+  const doLogin = (data) => {
+    userStore.loadUser(data)
+    props.setIsUserModalOpen(false)
+    setUserData({
+      username: "",
+      password: "",
+    });
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -30,39 +38,32 @@ const UserPortal = ({ props }) => {
       .then((data) => {
         if (data.status === "success") {
           // Login successful, do something here like redirect to the user's dashboard
-          userStore.loadUser(data.data)
-          props.setIsUserModalOpen(false)
-          setUserData({
-            username: "",
-            password: "",
-          });
-
+          doLogin(data.data)
         } else {
-          // Login failed, try to register the user instead
-          const registerOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
-          }
-          fetch(endpointUrl("register"), registerOptions)
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status === "success") {
-                // Registration successful, do something here like redirect to the user's dashboard
-                userStore.loadUser(data.data)
-                props.setIsUserModalOpen(false)
-                setUserData({
-                  username: "",
-                  password: "",
+          console.log(data)
+          if (data.error.hasOwnProperty("authentication")) {
+            if (data.error.authentication.includes("Password does not match!")) {
+              alert("Wrong password, try again")
+            } else if (data.error.authentication.includes("User does not exist!")) {
+              // Login failed, try to register the user instead
+              fetch(endpointUrl("register"), requestOptions)
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.status === "success") {
+                    doLogin(data.data)
+                  } else {
+                    alert("Something went wrong")
+                  }
+                })
+                .catch((error) => {
+                  console.error('Error:', error);
                 });
-              } else {
-                // Registration failed, show error message to the user
-                alert("Registration failed: " + data.error.message);
-              }
-            })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
+            } else {
+              alert("Something went wrong")
+            }
+          } else {
+            alert("Something went wrong")
+          }
         }
       })
       .catch((error) => {
