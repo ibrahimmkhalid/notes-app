@@ -40,7 +40,6 @@ const UserPortal = ({ props }) => {
           // Login successful, do something here like redirect to the user's dashboard
           doLogin(data.data)
         } else {
-          console.log(data)
           if (data.error.hasOwnProperty("authentication")) {
             if (data.error.authentication.includes("Password does not match!")) {
               alert("Wrong password, try again")
